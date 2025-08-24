@@ -30,9 +30,30 @@ const UserRewards: React.FC = () => {
       // For now, we'll use a mock approach since we don't have a get all users endpoint
       // In a real app, you'd have an endpoint to get all users
       const mockUsers: User[] = [
-        { id: 1, name: "John Doe", email: "john@example.com", address: "123 Main St", visit_count: 5, current_tier: 5 },
-        { id: 2, name: "Jane Smith", email: "jane@example.com", address: "456 Oak Ave", visit_count: 12, current_tier: 10 },
-        { id: 3, name: "Bob Johnson", email: "bob@example.com", address: "789 Pine Rd", visit_count: 18, current_tier: 15 }
+        {
+          id: 1,
+          name: 'John Doe',
+          email: 'john@example.com',
+          address: '123 Main St',
+          visit_count: 5,
+          current_tier: 5,
+        },
+        {
+          id: 2,
+          name: 'Jane Smith',
+          email: 'jane@example.com',
+          address: '456 Oak Ave',
+          visit_count: 12,
+          current_tier: 10,
+        },
+        {
+          id: 3,
+          name: 'Bob Johnson',
+          email: 'bob@example.com',
+          address: '789 Pine Rd',
+          visit_count: 18,
+          current_tier: 15,
+        },
       ];
       setUsers(mockUsers);
       if (mockUsers.length > 0) {
@@ -99,16 +120,16 @@ const UserRewards: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="loading">Loading users...</div>;
+    return <div className='loading'>Loading users...</div>;
   }
 
   if (users.length === 0) {
     return (
-      <div className="user-rewards">
-        <div className="user-rewards-header">
+      <div className='user-rewards'>
+        <div className='user-rewards-header'>
           <h2>User Rewards</h2>
         </div>
-        <div className="no-users">
+        <div className='no-users'>
           <p>No users found.</p>
         </div>
       </div>
@@ -116,20 +137,21 @@ const UserRewards: React.FC = () => {
   }
 
   return (
-    <div className="user-rewards">
-      <div className="user-rewards-header">
+    <div className='user-rewards'>
+      <div className='user-rewards-header'>
         <h2>User Rewards</h2>
-        <div className="user-selector">
-          <label htmlFor="user-select">Select User:</label>
+        <div className='user-selector'>
+          <label htmlFor='user-select'>Select User:</label>
           <select
-            id="user-select"
+            id='user-select'
             value={selectedUserId}
-            onChange={(e) => setSelectedUserId(parseInt(e.target.value))}
+            onChange={e => setSelectedUserId(parseInt(e.target.value))}
           >
             <option value={0}>Select a user</option>
-            {users.map((user) => (
+            {users.map(user => (
               <option key={user.id} value={user.id}>
-                {user.name} (Tier {user.current_tier}, {user.visit_count} visits)
+                {user.name} (Tier {user.current_tier}, {user.visit_count}{' '}
+                visits)
               </option>
             ))}
           </select>
@@ -137,23 +159,31 @@ const UserRewards: React.FC = () => {
       </div>
 
       {userDetails && (
-        <div className="user-details">
+        <div className='user-details'>
           <h3>User Information</h3>
-          <div className="user-info">
-            <p><strong>Name:</strong> {userDetails.name}</p>
-            <p><strong>Email:</strong> {userDetails.email}</p>
-            <p><strong>Current Tier:</strong> {userDetails.current_tier}</p>
-            <p><strong>Total Visits:</strong> {userDetails.visit_count}</p>
+          <div className='user-info'>
+            <p>
+              <strong>Name:</strong> {userDetails.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {userDetails.email}
+            </p>
+            <p>
+              <strong>Current Tier:</strong> {userDetails.current_tier}
+            </p>
+            <p>
+              <strong>Total Visits:</strong> {userDetails.visit_count}
+            </p>
           </div>
         </div>
       )}
 
-      <div className="rewards-list">
+      <div className='rewards-list'>
         <h3>Reward History</h3>
         {userRewards.length === 0 ? (
-          <p className="no-data">No rewards found for this user.</p>
+          <p className='no-data'>No rewards found for this user.</p>
         ) : (
-          <div className="rewards-table">
+          <div className='rewards-table'>
             <table>
               <thead>
                 <tr>
@@ -166,26 +196,30 @@ const UserRewards: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {userRewards.map((reward) => (
-                  <tr key={reward.id} className={reward.is_used ? 'used' : 'unused'}>
+                {userRewards.map(reward => (
+                  <tr
+                    key={reward.id}
+                    className={reward.is_used ? 'used' : 'unused'}
+                  >
                     <td>{getRewardTypeLabel(reward.reward_type)}</td>
                     <td>{getRewardValue(reward)}</td>
                     <td>{new Date(reward.created_at).toLocaleDateString()}</td>
                     <td>
-                      <span className={`status ${reward.is_used ? 'used' : 'unused'}`}>
+                      <span
+                        className={`status ${reward.is_used ? 'used' : 'unused'}`}
+                      >
                         {reward.is_used ? 'Used' : 'Available'}
                       </span>
                     </td>
                     <td>
-                      {reward.used_at 
+                      {reward.used_at
                         ? new Date(reward.used_at).toLocaleDateString()
-                        : '-'
-                      }
+                        : '-'}
                     </td>
                     <td>
                       {!reward.is_used && (
                         <button
-                          className="use-button"
+                          className='use-button'
                           onClick={() => handleUseReward(reward.id)}
                         >
                           Mark as Used

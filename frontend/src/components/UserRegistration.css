@@ -10,7 +10,7 @@
 }
 
 .registration-container {
-  background: linear-gradient(145deg, #2C1810, #3D2314, #4A2C1A);
+  background: linear-gradient(145deg, #2c1810, #3d2314, #4a2c1a);
   border-radius: 20px;
   padding: 25px;
   max-width: 700px;
@@ -27,7 +27,12 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: conic-gradient(from 180deg, transparent, rgba(139, 69, 19, 0.1), transparent);
+  background: conic-gradient(
+    from 180deg,
+    transparent,
+    rgba(139, 69, 19, 0.1),
+    transparent
+  );
   animation: coffeeRotate 12s linear infinite reverse;
   pointer-events: none;
 }
@@ -36,21 +41,21 @@
 .header-icon {
   margin-right: 10px;
   font-size: 1.5rem !important;
-  color: #DEB887;
+  color: #deb887;
   vertical-align: middle;
 }
 
 .section-icon {
   margin-right: 8px;
   font-size: 1.2rem !important;
-  color: #DEB887;
+  color: #deb887;
   vertical-align: middle;
 }
 
 .label-icon {
   margin-right: 6px;
   font-size: 1rem !important;
-  color: #DEB887;
+  color: #deb887;
   vertical-align: middle;
 }
 
@@ -64,7 +69,7 @@
 .success-icon {
   margin-right: 6px;
   font-size: 1rem !important;
-  color: #90EE90;
+  color: #90ee90;
   vertical-align: middle;
 }
 
@@ -75,18 +80,26 @@
   height: 16px;
   border: 2px solid rgba(245, 222, 179, 0.3);
   border-radius: 50%;
-  border-top-color: #F5DEB3;
+  border-top-color: #f5deb3;
   animation: spin 1s ease-in-out infinite;
   margin-right: 8px;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes coffeeGlow {
-  0% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); }
-  100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(222, 184, 135, 0.5); }
+  0% {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+  100% {
+    text-shadow:
+      2px 2px 4px rgba(0, 0, 0, 0.8),
+      0 0 10px rgba(222, 184, 135, 0.5);
+  }
 }
 
 .registration-content {
@@ -98,19 +111,24 @@
   z-index: 1;
 }
 
-.camera-section, .form-section {
+.camera-section,
+.form-section {
   display: flex;
   flex-direction: column;
   animation: fadeInUp 1s ease-out both;
 }
 
-.camera-section { animation-delay: 0.2s; }
-.form-section { animation-delay: 0.4s; }
+.camera-section {
+  animation-delay: 0.2s;
+}
+.form-section {
+  animation-delay: 0.4s;
+}
 
 /* Update existing styles to accommodate icons */
 .registration-container h2 {
   text-align: center;
-  color: #DEB887;
+  color: #deb887;
   margin-bottom: 20px;
   font-size: 1.8rem;
   font-weight: 700;
@@ -123,8 +141,9 @@
   justify-content: center;
 }
 
-.camera-section h3, .form-section h3 {
-  color: #DEB887;
+.camera-section h3,
+.form-section h3 {
+  color: #deb887;
   margin-bottom: 15px;
   font-size: 1.2rem;
   font-weight: 700;
@@ -136,10 +155,10 @@
 .webcam {
   border-radius: 15px;
   margin-bottom: 12px;
-  box-shadow: 
+  box-shadow:
     0 15px 30px rgba(0, 0, 0, 0.5),
     0 0 0 2px rgba(139, 69, 19, 0.3);
-  border: 3px solid #8B4513;
+  border: 3px solid #8b4513;
   transition: all 0.3s ease;
   max-height: 200px;
   width: 100%;
@@ -148,14 +167,14 @@
 
 .webcam:hover {
   transform: scale(1.02);
-  box-shadow: 
+  box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.7),
     0 0 0 3px rgba(139, 69, 19, 0.4);
 }
 
 .capture-button {
-  background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
-  color: #F5DEB3;
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #cd853f 100%);
+  color: #f5deb3;
   border: none;
   padding: 12px 20px;
   border-radius: 20px;
@@ -163,7 +182,7 @@
   font-weight: 700;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 
+  box-shadow:
     0 8px 25px rgba(0, 0, 0, 0.5),
     0 0 0 1px rgba(139, 69, 19, 0.3);
   margin-bottom: 12px;
@@ -183,16 +202,21 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transition: left 0.5s ease;
 }
 
 .capture-button:hover:not(:disabled) {
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 
+  box-shadow:
     0 12px 30px rgba(0, 0, 0, 0.7),
     0 0 0 2px rgba(139, 69, 19, 0.4);
-  background: linear-gradient(135deg, #A0522D 0%, #CD853F 50%, #DEB887 100%);
+  background: linear-gradient(135deg, #a0522d 0%, #cd853f 50%, #deb887 100%);
 }
 
 .capture-button:hover:not(:disabled)::before {
@@ -209,10 +233,10 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(145deg, #2C1810, #3D2314);
+  background: linear-gradient(145deg, #2c1810, #3d2314);
   padding: 15px;
   border-radius: 12px;
-  border: 2px solid #8B4513;
+  border: 2px solid #8b4513;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
   animation: coffeeBrew 0.6s ease-out;
 }
@@ -222,11 +246,11 @@
   height: 40px;
   border-radius: 8px;
   object-fit: cover;
-  border: 2px solid #8B4513;
+  border: 2px solid #8b4513;
 }
 
 .captured-image span {
-  color: #DEB887;
+  color: #deb887;
   font-weight: 700;
   font-size: 1rem;
   display: flex;
@@ -238,15 +262,21 @@
   animation: fadeInUp 0.6s ease-out both;
 }
 
-.form-group:nth-child(1) { animation-delay: 0.6s; }
-.form-group:nth-child(2) { animation-delay: 0.8s; }
-.form-group:nth-child(3) { animation-delay: 1s; }
+.form-group:nth-child(1) {
+  animation-delay: 0.6s;
+}
+.form-group:nth-child(2) {
+  animation-delay: 0.8s;
+}
+.form-group:nth-child(3) {
+  animation-delay: 1s;
+}
 
 .form-group label {
   display: flex;
   align-items: center;
   margin-bottom: 8px;
-  color: #DEB887;
+  color: #deb887;
   font-weight: 700;
   font-size: 0.9rem;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
@@ -255,37 +285,37 @@
 .form-group input {
   width: 100%;
   padding: 12px 15px;
-  border: 2px solid #8B4513;
+  border: 2px solid #8b4513;
   border-radius: 10px;
   font-size: 0.9rem;
   transition: all 0.3s ease;
   box-sizing: border-box;
-  background: linear-gradient(145deg, #2C1810, #3D2314);
-  color: #CD853F;
+  background: linear-gradient(145deg, #2c1810, #3d2314);
+  color: #cd853f;
   font-weight: 500;
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #A0522D;
-  box-shadow: 
+  border-color: #a0522d;
+  box-shadow:
     0 0 0 4px rgba(139, 69, 19, 0.2),
     0 5px 15px rgba(0, 0, 0, 0.4);
   transform: translateY(-2px);
 }
 
 .form-group input::placeholder {
-  color: #A0522D;
+  color: #a0522d;
   opacity: 0.7;
 }
 
 .error-message {
-  background: linear-gradient(135deg, #4A2C1A, #3D2314);
-  color: #FFB6C1;
+  background: linear-gradient(135deg, #4a2c1a, #3d2314);
+  color: #ffb6c1;
   padding: 15px;
   border-radius: 12px;
   margin: 15px 0;
-  border-left: 5px solid #8B4513;
+  border-left: 5px solid #8b4513;
   font-weight: 600;
   box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
   animation: shakeError 0.5s ease-in-out;
@@ -299,7 +329,8 @@
   animation: fadeInUp 1s ease-out 1.2s both;
 }
 
-.back-button, .register-button {
+.back-button,
+.register-button {
   flex: 1;
   padding: 15px 20px;
   border-radius: 20px;
@@ -318,38 +349,39 @@
 }
 
 .back-button {
-  background: linear-gradient(135deg, #2C1810 0%, #3D2314 100%);
-  color: #CD853F;
-  box-shadow: 
+  background: linear-gradient(135deg, #2c1810 0%, #3d2314 100%);
+  color: #cd853f;
+  box-shadow:
     0 8px 25px rgba(0, 0, 0, 0.5),
     0 0 0 1px rgba(139, 69, 19, 0.3);
 }
 
 .back-button:hover:not(:disabled) {
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 
+  box-shadow:
     0 12px 30px rgba(0, 0, 0, 0.7),
     0 0 0 2px rgba(139, 69, 19, 0.4);
-  background: linear-gradient(135deg, #3D2314 0%, #4A2C1A 100%);
+  background: linear-gradient(135deg, #3d2314 0%, #4a2c1a 100%);
 }
 
 .register-button {
-  background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
-  color: #F5DEB3;
-  box-shadow: 
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #cd853f 100%);
+  color: #f5deb3;
+  box-shadow:
     0 8px 25px rgba(0, 0, 0, 0.5),
     0 0 0 1px rgba(139, 69, 19, 0.3);
 }
 
 .register-button:hover:not(:disabled) {
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 
+  box-shadow:
     0 12px 30px rgba(0, 0, 0, 0.7),
     0 0 0 2px rgba(139, 69, 19, 0.4);
-  background: linear-gradient(135deg, #A0522D 0%, #CD853F 50%, #DEB887 100%);
+  background: linear-gradient(135deg, #a0522d 0%, #cd853f 50%, #deb887 100%);
 }
 
-.back-button:disabled, .register-button:disabled {
+.back-button:disabled,
+.register-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
@@ -358,19 +390,35 @@
 
 /* Coffee-themed animations */
 @keyframes coffeeRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes coffeePulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 0.8; }
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
 @keyframes shakeError {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
 }
 
 @keyframes fadeInUp {
@@ -389,68 +437,68 @@
   .user-registration {
     padding: 5px;
   }
-  
+
   .registration-container {
     padding: 20px;
     margin: 5px;
     border-radius: 15px;
     max-width: 100%;
   }
-  
+
   .registration-content {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .registration-container h2 {
     font-size: 1.5rem;
     margin-bottom: 15px;
   }
-  
+
   .form-actions {
     flex-direction: column;
     gap: 12px;
     margin-top: 20px;
   }
-  
+
   .webcam {
     max-height: 180px;
     border-radius: 12px;
   }
-  
+
   .capture-button {
     padding: 10px 15px;
     font-size: 0.9rem;
     border-radius: 15px;
   }
-  
+
   .form-group {
     margin-bottom: 15px;
   }
-  
+
   .form-group label {
     font-size: 0.85rem;
     margin-bottom: 6px;
   }
-  
+
   .form-group input {
     padding: 10px 12px;
     font-size: 0.85rem;
   }
-  
+
   .captured-image {
     padding: 12px;
   }
-  
+
   .captured-image img {
     width: 45px;
     height: 35px;
   }
-  
+
   .captured-image span {
     font-size: 0.9rem;
   }
-  
+
   .error-message {
     padding: 12px;
     font-size: 0.85rem;

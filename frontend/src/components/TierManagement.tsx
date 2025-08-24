@@ -12,7 +12,7 @@ const TierManagement: React.FC = () => {
     name: '',
     visit_requirement: 0,
     description: '',
-    is_active: true
+    is_active: true,
   });
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const TierManagement: React.FC = () => {
       name: tier.name,
       visit_requirement: tier.visit_requirement,
       description: tier.description || '',
-      is_active: tier.is_active
+      is_active: tier.is_active,
     });
     setShowForm(true);
   };
@@ -81,7 +81,7 @@ const TierManagement: React.FC = () => {
       name: '',
       visit_requirement: 0,
       description: '',
-      is_active: true
+      is_active: true,
     });
   };
 
@@ -92,75 +92,87 @@ const TierManagement: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="loading">Loading tiers...</div>;
+    return <div className='loading'>Loading tiers...</div>;
   }
 
   return (
-    <div className="tier-management">
-      <div className="tier-header">
+    <div className='tier-management'>
+      <div className='tier-header'>
         <h2>Tier Management</h2>
-        <button 
-          className="add-button"
-          onClick={() => setShowForm(true)}
-        >
+        <button className='add-button' onClick={() => setShowForm(true)}>
           Add New Tier
         </button>
       </div>
 
       {showForm && (
-        <div className="form-overlay">
-          <div className="form-container">
+        <div className='form-overlay'>
+          <div className='form-container'>
             <h3>{editingTier ? 'Edit Tier' : 'Add New Tier'}</h3>
             <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="name">Tier Name:</label>
+              <div className='form-group'>
+                <label htmlFor='name'>Tier Name:</label>
                 <input
-                  type="text"
-                  id="name"
+                  type='text'
+                  id='name'
                   value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  onChange={e =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   required
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="visit_requirement">Visit Requirement:</label>
+              <div className='form-group'>
+                <label htmlFor='visit_requirement'>Visit Requirement:</label>
                 <input
-                  type="number"
-                  id="visit_requirement"
+                  type='number'
+                  id='visit_requirement'
                   value={formData.visit_requirement}
-                  onChange={(e) => setFormData({...formData, visit_requirement: parseInt(e.target.value)})}
-                  min="1"
+                  onChange={e =>
+                    setFormData({
+                      ...formData,
+                      visit_requirement: parseInt(e.target.value),
+                    })
+                  }
+                  min='1'
                   required
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="description">Description:</label>
+              <div className='form-group'>
+                <label htmlFor='description'>Description:</label>
                 <textarea
-                  id="description"
+                  id='description'
                   value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  onChange={e =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                   rows={3}
                 />
               </div>
 
-              <div className="form-group">
+              <div className='form-group'>
                 <label>
                   <input
-                    type="checkbox"
+                    type='checkbox'
                     checked={formData.is_active}
-                    onChange={(e) => setFormData({...formData, is_active: e.target.checked})}
+                    onChange={e =>
+                      setFormData({ ...formData, is_active: e.target.checked })
+                    }
                   />
                   Active
                 </label>
               </div>
 
-              <div className="form-actions">
-                <button type="submit" className="save-button">
+              <div className='form-actions'>
+                <button type='submit' className='save-button'>
                   {editingTier ? 'Update' : 'Create'}
                 </button>
-                <button type="button" className="cancel-button" onClick={handleCancel}>
+                <button
+                  type='button'
+                  className='cancel-button'
+                  onClick={handleCancel}
+                >
                   Cancel
                 </button>
               </div>
@@ -169,35 +181,44 @@ const TierManagement: React.FC = () => {
         </div>
       )}
 
-      <div className="tiers-list">
+      <div className='tiers-list'>
         {tiers.length === 0 ? (
-          <p className="no-data">No tiers found. Create your first tier!</p>
+          <p className='no-data'>No tiers found. Create your first tier!</p>
         ) : (
-          <div className="tiers-grid">
-            {tiers.map((tier) => (
-              <div key={tier.id} className="tier-card">
-                <div className="tier-header">
+          <div className='tiers-grid'>
+            {tiers.map(tier => (
+              <div key={tier.id} className='tier-card'>
+                <div className='tier-header'>
                   <h3>{tier.name}</h3>
-                  <span className={`status ${tier.is_active ? 'active' : 'inactive'}`}>
+                  <span
+                    className={`status ${tier.is_active ? 'active' : 'inactive'}`}
+                  >
                     {tier.is_active ? 'Active' : 'Inactive'}
                   </span>
                 </div>
-                <div className="tier-details">
-                  <p><strong>Visit Requirement:</strong> {tier.visit_requirement}</p>
+                <div className='tier-details'>
+                  <p>
+                    <strong>Visit Requirement:</strong> {tier.visit_requirement}
+                  </p>
                   {tier.description && (
-                    <p><strong>Description:</strong> {tier.description}</p>
+                    <p>
+                      <strong>Description:</strong> {tier.description}
+                    </p>
                   )}
-                  <p><strong>Created:</strong> {new Date(tier.created_at).toLocaleDateString()}</p>
+                  <p>
+                    <strong>Created:</strong>{' '}
+                    {new Date(tier.created_at).toLocaleDateString()}
+                  </p>
                 </div>
-                <div className="tier-actions">
-                  <button 
-                    className="edit-button"
+                <div className='tier-actions'>
+                  <button
+                    className='edit-button'
                     onClick={() => handleEdit(tier)}
                   >
                     Edit
                   </button>
-                  <button 
-                    className="delete-button"
+                  <button
+                    className='delete-button'
                     onClick={() => handleDelete(tier.id)}
                   >
                     Delete

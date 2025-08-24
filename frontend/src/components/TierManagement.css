@@ -160,7 +160,9 @@
   border: 2px solid #8b4513;
   border-radius: 15px;
   padding: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   box-shadow: 0 4px 12px rgba(139, 69, 19, 0.2);
 }
 
@@ -283,11 +285,11 @@
     gap: 15px;
     align-items: stretch;
   }
-  
+
   .tiers-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .form-container {
     margin: 20px;
     width: calc(100% - 40px);

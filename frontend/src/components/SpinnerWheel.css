@@ -1,0 +1,379 @@
+.spinner-wheel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.spinner-wheel-container {
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+  position: relative;
+  animation: slideIn 0.4s ease-out;
+  border: 3px solid #ecf0f1;
+}
+
+.spinner-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.spinner-header h2 {
+  color: #ecf0f1;
+  margin: 0 0 10px 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.spinner-header p {
+  color: #bdc3c7;
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.wheel-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.wheel-container {
+  position: relative;
+  width: 350px;
+  height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Wheel styling is now handled by react-custom-roulette package */
+
+/* Pointer and center styling is now handled by react-custom-roulette package */
+
+.spinner-actions {
+  text-align: center;
+}
+
+.spin-button {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: #ffffff;
+  border: none;
+  padding: 18px 35px;
+  border-radius: 50px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.spin-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.spin-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ee5a24 0%, #ff6b6b 100%);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+}
+
+.spin-button:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.spin-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spinning-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.spinner-animation {
+  font-size: 3.5rem;
+  animation: spin 1s linear infinite;
+}
+
+.spinning-message p {
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.result-section {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.result-card {
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
+  border: 3px solid #ecf0f1;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.result-card h3 {
+  color: #ffffff;
+  margin: 0 0 25px 0;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.result-reward {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.result-reward h4 {
+  color: #ffffff;
+  margin: 0 0 15px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.result-reward p {
+  color: #e8e8e8;
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.claim-button {
+  background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+  color: #ffffff;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 184, 148, 0.4);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  width: 100%;
+}
+
+.claim-button:hover {
+  background: linear-gradient(135deg, #00a085 0%, #00b894 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(0, 184, 148, 0.6);
+}
+
+.close-spinner-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.3rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+.close-spinner-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: scale(0.8) translateY(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading and error states */
+.loading-message,
+.error-message,
+.no-options-message {
+  text-align: center;
+  padding: 50px 30px;
+}
+
+.loading-message .loading-spinner {
+  font-size: 4rem;
+  animation: spin 1s linear infinite;
+  margin-bottom: 25px;
+}
+
+.loading-message p,
+.error-message p,
+.no-options-message p {
+  color: #e8e8e8;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.error-message h3,
+.no-options-message h3 {
+  color: #ffffff;
+  margin: 0 0 20px 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.error-message .close-button,
+.no-options-message .close-button {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: #ffffff;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 25px;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.error-message .close-button:hover,
+.no-options-message .close-button:hover {
+  background: linear-gradient(135deg, #ee5a24 0%, #ff6b6b 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .spinner-wheel-container {
+    padding: 30px 20px;
+    margin: 20px;
+    width: calc(100% - 40px);
+  }
+
+  .spinner-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .wheel-container {
+    width: 300px;
+    height: 300px;
+  }
+
+  .spin-button {
+    padding: 15px 25px;
+    font-size: 1.1rem;
+  }
+
+  .result-card {
+    padding: 25px;
+  }
+
+  .result-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .result-reward h4 {
+    font-size: 1.3rem;
+  }
+
+  .close-spinner-button {
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .wheel-container {
+    width: 280px;
+    height: 280px;
+  }
+
+  .spinner-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .spinner-header p {
+    font-size: 1rem;
+  }
+}

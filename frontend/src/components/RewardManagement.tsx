@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Reward, RewardCreate, Tier } from '../types';
-import { getRewards, createReward, updateReward, deleteReward, getTiers } from '../services/api';
+import {
+  getRewards,
+  createReward,
+  updateReward,
+  deleteReward,
+  getTiers,
+} from '../services/api';
 import './RewardManagement.css';
 
 const RewardManagement: React.FC = () => {
@@ -15,7 +21,7 @@ const RewardManagement: React.FC = () => {
     reward_type: 'free_coffee',
     value: 0,
     description: '',
-    is_active: true
+    is_active: true,
   });
 
   useEffect(() => {
@@ -27,7 +33,7 @@ const RewardManagement: React.FC = () => {
       setLoading(true);
       const [rewardsData, tiersData] = await Promise.all([
         getRewards(),
-        getTiers()
+        getTiers(),
       ]);
       setRewards(rewardsData);
       setTiers(tiersData);
@@ -67,7 +73,7 @@ const RewardManagement: React.FC = () => {
       reward_type: reward.reward_type,
       value: reward.value || 0,
       description: reward.description || '',
-      is_active: reward.is_active
+      is_active: reward.is_active,
     });
     setShowForm(true);
   };
@@ -92,7 +98,7 @@ const RewardManagement: React.FC = () => {
       reward_type: 'free_coffee',
       value: 0,
       description: '',
-      is_active: true
+      is_active: true,
     });
   };
 
@@ -121,36 +127,38 @@ const RewardManagement: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="loading">Loading rewards...</div>;
+    return <div className='loading'>Loading rewards...</div>;
   }
 
   return (
-    <div className="reward-management">
-      <div className="reward-header">
+    <div className='reward-management'>
+      <div className='reward-header'>
         <h2>Reward Management</h2>
-        <button 
-          className="add-button"
-          onClick={() => setShowForm(true)}
-        >
+        <button className='add-button' onClick={() => setShowForm(true)}>
           Add New Reward
         </button>
       </div>
 
       {showForm && (
-        <div className="form-overlay">
-          <div className="form-container">
+        <div className='form-overlay'>
+          <div className='form-container'>
             <h3>{editingReward ? 'Edit Reward' : 'Add New Reward'}</h3>
             <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="tier_id">Tier:</label>
+              <div className='form-group'>
+                <label htmlFor='tier_id'>Tier:</label>
                 <select
-                  id="tier_id"
+                  id='tier_id'
                   value={formData.tier_id}
-                  onChange={(e) => setFormData({...formData, tier_id: parseInt(e.target.value)})}
+                  onChange={e =>
+                    setFormData({
+                      ...formData,
+                      tier_id: parseInt(e.target.value),
+                    })
+                  }
                   required
                 >
                   <option value={0}>Select a tier</option>
-                  {tiers.map((tier) => (
+                  {tiers.map(tier => (
                     <option key={tier.id} value={tier.id}>
                       {tier.name} ({tier.visit_requirement} visits)
                     </option>
@@ -158,73 +166,90 @@ const RewardManagement: React.FC = () => {
                 </select>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="name">Reward Name:</label>
+              <div className='form-group'>
+                <label htmlFor='name'>Reward Name:</label>
                 <input
-                  type="text"
-                  id="name"
+                  type='text'
+                  id='name'
                   value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  onChange={e =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   required
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="reward_type">Reward Type:</label>
+              <div className='form-group'>
+                <label htmlFor='reward_type'>Reward Type:</label>
                 <select
-                  id="reward_type"
+                  id='reward_type'
                   value={formData.reward_type}
-                  onChange={(e) => setFormData({...formData, reward_type: e.target.value})}
+                  onChange={e =>
+                    setFormData({ ...formData, reward_type: e.target.value })
+                  }
                   required
                 >
-                  <option value="free_coffee">Free Coffee</option>
-                  <option value="discount">Discount</option>
-                  <option value="spinner">Spinner</option>
+                  <option value='free_coffee'>Free Coffee</option>
+                  <option value='discount'>Discount</option>
+                  <option value='spinner'>Spinner</option>
                 </select>
               </div>
 
               {formData.reward_type === 'discount' && (
-                <div className="form-group">
-                  <label htmlFor="value">Discount Percentage:</label>
+                <div className='form-group'>
+                  <label htmlFor='value'>Discount Percentage:</label>
                   <input
-                    type="number"
-                    id="value"
+                    type='number'
+                    id='value'
                     value={formData.value}
-                    onChange={(e) => setFormData({...formData, value: parseFloat(e.target.value)})}
-                    min="1"
-                    max="100"
-                    step="0.1"
+                    onChange={e =>
+                      setFormData({
+                        ...formData,
+                        value: parseFloat(e.target.value),
+                      })
+                    }
+                    min='1'
+                    max='100'
+                    step='0.1'
                     required
                   />
                 </div>
               )}
 
-              <div className="form-group">
-                <label htmlFor="description">Description:</label>
+              <div className='form-group'>
+                <label htmlFor='description'>Description:</label>
                 <textarea
-                  id="description"
+                  id='description'
                   value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  onChange={e =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                   rows={3}
                 />
               </div>
 
-              <div className="form-group">
+              <div className='form-group'>
                 <label>
                   <input
-                    type="checkbox"
+                    type='checkbox'
                     checked={formData.is_active}
-                    onChange={(e) => setFormData({...formData, is_active: e.target.checked})}
+                    onChange={e =>
+                      setFormData({ ...formData, is_active: e.target.checked })
+                    }
                   />
                   Active
                 </label>
               </div>
 
-              <div className="form-actions">
-                <button type="submit" className="save-button">
+              <div className='form-actions'>
+                <button type='submit' className='save-button'>
                   {editingReward ? 'Update' : 'Create'}
                 </button>
-                <button type="button" className="cancel-button" onClick={handleCancel}>
+                <button
+                  type='button'
+                  className='cancel-button'
+                  onClick={handleCancel}
+                >
                   Cancel
                 </button>
               </div>
@@ -233,39 +258,53 @@ const RewardManagement: React.FC = () => {
         </div>
       )}
 
-      <div className="rewards-list">
+      <div className='rewards-list'>
         {rewards.length === 0 ? (
-          <p className="no-data">No rewards found. Create your first reward!</p>
+          <p className='no-data'>No rewards found. Create your first reward!</p>
         ) : (
-          <div className="rewards-grid">
-            {rewards.map((reward) => (
-              <div key={reward.id} className="reward-card">
-                <div className="reward-header">
+          <div className='rewards-grid'>
+            {rewards.map(reward => (
+              <div key={reward.id} className='reward-card'>
+                <div className='reward-header'>
                   <h3>{reward.name}</h3>
-                  <span className={`status ${reward.is_active ? 'active' : 'inactive'}`}>
+                  <span
+                    className={`status ${reward.is_active ? 'active' : 'inactive'}`}
+                  >
                     {reward.is_active ? 'Active' : 'Inactive'}
                   </span>
                 </div>
-                <div className="reward-details">
-                  <p><strong>Tier:</strong> {getTierName(reward.tier_id)}</p>
-                  <p><strong>Type:</strong> {getRewardTypeLabel(reward.reward_type)}</p>
+                <div className='reward-details'>
+                  <p>
+                    <strong>Tier:</strong> {getTierName(reward.tier_id)}
+                  </p>
+                  <p>
+                    <strong>Type:</strong>{' '}
+                    {getRewardTypeLabel(reward.reward_type)}
+                  </p>
                   {reward.value && (
-                    <p><strong>Value:</strong> {reward.value}%</p>
+                    <p>
+                      <strong>Value:</strong> {reward.value}%
+                    </p>
                   )}
                   {reward.description && (
-                    <p><strong>Description:</strong> {reward.description}</p>
+                    <p>
+                      <strong>Description:</strong> {reward.description}
+                    </p>
                   )}
-                  <p><strong>Created:</strong> {new Date(reward.created_at).toLocaleDateString()}</p>
+                  <p>
+                    <strong>Created:</strong>{' '}
+                    {new Date(reward.created_at).toLocaleDateString()}
+                  </p>
                 </div>
-                <div className="reward-actions">
-                  <button 
-                    className="edit-button"
+                <div className='reward-actions'>
+                  <button
+                    className='edit-button'
                     onClick={() => handleEdit(reward)}
                   >
                     Edit
                   </button>
-                  <button 
-                    className="delete-button"
+                  <button
+                    className='delete-button'
                     onClick={() => handleDelete(reward.id)}
                   >
                     Delete

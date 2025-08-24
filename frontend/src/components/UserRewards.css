@@ -211,24 +211,24 @@
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .user-selector {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .user-selector select {
     min-width: auto;
   }
-  
+
   .user-info {
     grid-template-columns: 1fr;
   }
-  
+
   .rewards-table {
     font-size: 0.9rem;
   }
-  
+
   .rewards-table th,
   .rewards-table td {
     padding: 8px 6px;

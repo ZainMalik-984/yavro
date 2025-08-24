@@ -3,8 +3,17 @@
 Initialize the tier-based reward system with default tiers and rewards
 """
 
-from sqlalchemy.orm import Session
-import models, schemas, crud, database
+try:
+    # Try importing as if running from root directory
+    import app.schemas as schemas
+    import app.crud as crud
+    import app.database as database
+except ImportError:
+    # Try importing as if running from within app directory
+    import schemas
+    import crud
+    import database
+
 
 def init_tier_system():
     """Initialize the tier system with default tiers and rewards"""
@@ -79,7 +88,8 @@ def init_tier_system():
             print(f"Created reward: {db_reward.name} for {tier_name} tier")
         
         # Create spinner options for the Gold tier spinner
-        gold_reward = next(r for r in created_rewards if r.reward_type == "spinner")
+        gold_reward = next(r for r in created_rewards 
+                          if r.reward_type == "spinner")
         spinner_options_data = [
             {
                 "name": "Free Coffee",
@@ -111,8 +121,10 @@ def init_tier_system():
         
         for option_data in spinner_options_data:
             option = schemas.SpinnerOptionCreate(**option_data)
-            db_option = crud.create_spinner_option(db, option, gold_reward.id)
-            print(f"Created spinner option: {db_option.name} (probability: {db_option.probability})")
+            db_option = crud.create_spinner_option(db, option, 
+                                                  gold_reward.id)
+            print(f"Created spinner option: {db_option.name} "
+                  f"(probability: {db_option.probability})")
         
         print("Tier-based reward system initialized successfully!")
         
@@ -122,6 +134,7 @@ def init_tier_system():
         raise
     finally:
         db.close()
+
 
 if __name__ == "__main__":
     init_tier_system()

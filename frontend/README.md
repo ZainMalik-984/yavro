@@ -19,11 +19,13 @@ A modern React application for recognizing customers and managing a reward syste
 ## Installation
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Start the development server:
+
 ```bash
 npm start
 ```
@@ -34,7 +36,7 @@ The app will open at `http://localhost:3000`
 
 ### For Cashiers/Staff:
 
-1. **Customer Recognition**: 
+1. **Customer Recognition**:
    - Customer positions their face in the camera
    - Click "Capture & Recognize" to identify the customer
    - If recognized, proceed to checkout
@@ -90,6 +92,8 @@ src/
 - `npm run build` - Build for production
 - `npm test` - Run tests
 - `npm run eject` - Eject from Create React App
+- `npm run format` - Format all code with Prettier
+- `npm run format:check` - Check code formatting without making changes
 
 ## Technologies Used
 
@@ -111,15 +115,18 @@ Note: Camera access requires HTTPS in production or localhost for development.
 ## Troubleshooting
 
 ### Camera Access Issues:
+
 - Ensure the site is running on HTTPS or localhost
 - Check browser permissions for camera access
 - Try refreshing the page if camera doesn't load
 
 ### API Connection Issues:
+
 - Verify backend is running on `http://127.0.0.1:8000`
 - Check CORS settings in backend
 - Ensure all required endpoints are available
 
 ### Build Issues:
+
 - Clear node_modules and reinstall: `rm -rf node_modules && npm install`
 - Check Node.js version compatibility

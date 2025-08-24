@@ -1,7 +1,12 @@
 
-from database import engine, Base
-import models
+try:
+    # Try importing as if running from root directory
+    from app.database import engine, Base
+except ImportError:
+    # Try importing as if running from within app directory
+    from database import engine, Base
 import logging
+
 
 def init_db():
     """Initialize the database by creating all tables"""
@@ -12,6 +17,7 @@ def init_db():
     except Exception as e:
         logging.error(f"Error creating database tables: {e}")
         raise
+
 
 if __name__ == "__main__":
     init_db()

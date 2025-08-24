@@ -47,12 +47,16 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
       onUserRecognized(user);
     } catch (err: any) {
       console.error('Recognition error:', err);
-      
+
       if (err.response?.status === 404) {
         // User not found - this is expected for new customers
         onUserNotFound(webcamRef.current?.getScreenshot() || '');
       } else {
-        setError(err.response?.data?.detail || err.message || 'Failed to recognize user');
+        setError(
+          err.response?.data?.detail ||
+            err.message ||
+            'Failed to recognize user'
+        );
       }
     } finally {
       setIsLoading(false);
@@ -64,54 +68,47 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
   };
 
   return (
-    <div className="camera-capture">
-      <div className="camera-container">
+    <div className='camera-capture'>
+      <div className='camera-container'>
         <Webcam
           ref={webcamRef}
-          screenshotFormat="image/jpeg"
+          screenshotFormat='image/jpeg'
           width={400}
           height={300}
-          className="webcam"
+          className='webcam'
         />
-        <div className="camera-controls">
-          <button 
-            onClick={capture} 
+        <div className='camera-controls'>
+          <button
+            onClick={capture}
             disabled={isLoading}
-            className="capture-button"
+            className='capture-button'
           >
             {isLoading ? (
               <>
-                <CircularProgress size={20} className="button-icon" />
+                <CircularProgress size={20} className='button-icon' />
                 <span>Recognizing...</span>
               </>
             ) : (
               <>
-                <CameraAltIcon className="button-icon" />
+                <CameraAltIcon className='button-icon' />
               </>
             )}
           </button>
         </div>
 
-        {error && (
-          <div className="error-message">
-            {error}
-          </div>
-        )}
+        {error && <div className='error-message'>{error}</div>}
 
         {/* Instructions Toggle Button */}
-        <div className="instructions-toggle">
-          <button 
-            onClick={toggleInstructions}
-            className="toggle-button"
-          >
+        <div className='instructions-toggle'>
+          <button onClick={toggleInstructions} className='toggle-button'>
             {showInstructions ? (
               <>
-                <CloseIcon className="button-icon" />
+                <CloseIcon className='button-icon' />
                 <span>Hide Instructions</span>
               </>
             ) : (
               <>
-                <HelpOutlineIcon className="button-icon" />
+                <HelpOutlineIcon className='button-icon' />
                 <span>Show Instructions</span>
               </>
             )}
@@ -120,7 +117,7 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
 
         {/* Instructions Section - Hidden by default */}
         {showInstructions && (
-          <div className="instructions">
+          <div className='instructions'>
             <h3>How it works:</h3>
             <ul>
               <li>Position your face in the camera</li>

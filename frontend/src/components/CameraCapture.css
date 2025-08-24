@@ -9,7 +9,7 @@
 }
 
 .camera-container {
-  background: linear-gradient(145deg, #2C1810, #3D2314, #4A2C1A);
+  background: linear-gradient(145deg, #2c1810, #3d2314, #4a2c1a);
   border-radius: 20px;
   padding: 25px;
   max-width: 500px;
@@ -26,7 +26,12 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: conic-gradient(from 0deg, transparent, rgba(139, 69, 19, 0.1), transparent);
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(139, 69, 19, 0.1),
+    transparent
+  );
   animation: coffeeRotate 10s linear infinite;
   pointer-events: none;
 }
@@ -34,10 +39,10 @@
 .webcam {
   border-radius: 15px;
   margin-bottom: 15px;
-  box-shadow: 
+  box-shadow:
     0 15px 30px rgba(0, 0, 0, 0.5),
     0 0 0 2px rgba(139, 69, 19, 0.3);
-  border: 3px solid #8B4513;
+  border: 3px solid #8b4513;
   position: relative;
   z-index: 1;
   transition: all 0.3s ease;
@@ -48,7 +53,7 @@
 
 .webcam:hover {
   transform: scale(1.02);
-  box-shadow: 
+  box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.7),
     0 0 0 3px rgba(139, 69, 19, 0.4);
 }
@@ -60,8 +65,8 @@
 }
 
 .capture-button {
-  background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
-  color: #F5DEB3;
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #cd853f 100%);
+  color: #f5deb3;
   border: none;
   padding: 15px 25px;
   border-radius: 40px;
@@ -69,7 +74,7 @@
   font-weight: 700;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 
+  box-shadow:
     0 8px 25px rgba(0, 0, 0, 0.5),
     0 0 0 1px rgba(139, 69, 19, 0.3);
   min-width: 180px;
@@ -81,7 +86,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin: auto
+  margin: auto;
 }
 
 .button-icon {
@@ -92,11 +97,12 @@
 
 .button-icon.MuiCircularProgress-root {
   animation: none;
-  color: #F5DEB3;
+  color: #f5deb3;
 }
 
 @keyframes iconPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -128,16 +134,21 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transition: left 0.5s ease;
 }
 
 .capture-button:hover:not(:disabled) {
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 
+  box-shadow:
     0 15px 35px rgba(0, 0, 0, 0.7),
     0 0 0 2px rgba(139, 69, 19, 0.4);
-  background: linear-gradient(135deg, #A0522D 0%, #CD853F 50%, #DEB887 100%);
+  background: linear-gradient(135deg, #a0522d 0%, #cd853f 50%, #deb887 100%);
 }
 
 .capture-button:hover:not(:disabled)::before {
@@ -156,12 +167,12 @@
 }
 
 .error-message {
-  background: linear-gradient(135deg, #4A2C1A, #3D2314);
-  color: #FFB6C1;
+  background: linear-gradient(135deg, #4a2c1a, #3d2314);
+  color: #ffb6c1;
   padding: 15px;
   border-radius: 12px;
   margin: 15px 0;
-  border-left: 5px solid #8B4513;
+  border-left: 5px solid #8b4513;
   font-weight: 600;
   box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
   animation: shakeError 0.5s ease-in-out;
@@ -169,12 +180,12 @@
 }
 
 .instructions {
-  background: linear-gradient(145deg, #2C1810, #3D2314, #4A2C1A);
+  background: linear-gradient(145deg, #2c1810, #3d2314, #4a2c1a);
   padding: 20px;
   border-radius: 15px;
   text-align: left;
-  border-left: 5px solid #8B4513;
-  box-shadow: 
+  border-left: 5px solid #8b4513;
+  box-shadow:
     0 10px 25px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   position: relative;
@@ -183,7 +194,7 @@
 }
 
 .instructions h3 {
-  color: #DEB887;
+  color: #deb887;
   margin-bottom: 15px;
   font-size: 1.1rem;
   font-weight: 700;
@@ -197,7 +208,7 @@
 
 .instructions li {
   margin-bottom: 8px;
-  color: #CD853F;
+  color: #cd853f;
   line-height: 1.4;
   font-weight: 500;
   position: relative;
@@ -205,26 +216,50 @@
   font-size: 0.9rem;
 }
 
-.instructions li:nth-child(1) { animation-delay: 1s; }
-.instructions li:nth-child(2) { animation-delay: 1.2s; }
-.instructions li:nth-child(3) { animation-delay: 1.4s; }
-.instructions li:nth-child(4) { animation-delay: 1.6s; }
+.instructions li:nth-child(1) {
+  animation-delay: 1s;
+}
+.instructions li:nth-child(2) {
+  animation-delay: 1.2s;
+}
+.instructions li:nth-child(3) {
+  animation-delay: 1.4s;
+}
+.instructions li:nth-child(4) {
+  animation-delay: 1.6s;
+}
 
 /* Coffee-themed animations */
 @keyframes coffeeRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes coffeePulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 0.8; }
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
 @keyframes shakeError {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
 }
 
 @keyframes fadeInUp {
@@ -246,12 +281,12 @@
     border-radius: 15px;
     max-width: 450px;
   }
-  
+
   .webcam {
     max-height: 250px;
     border-radius: 12px;
   }
-  
+
   .capture-button {
     width: 100%;
     padding: 12px 20px;
@@ -259,27 +294,27 @@
     min-width: auto;
     border-radius: 30px;
   }
-  
+
   .toggle-button {
     padding: 8px 16px;
     font-size: 0.8rem;
     border-radius: 15px;
   }
-  
+
   .instructions {
     padding: 15px;
   }
-  
+
   .instructions h3 {
     font-size: 1rem;
     margin-bottom: 10px;
   }
-  
+
   .instructions li {
     font-size: 0.85rem;
     margin-bottom: 6px;
   }
-  
+
   .error-message {
     padding: 12px;
     font-size: 0.85rem;
@@ -294,8 +329,8 @@
 }
 
 .toggle-button {
-  background: linear-gradient(135deg, #2C1810 0%, #3D2314 100%);
-  color: #CD853F;
+  background: linear-gradient(135deg, #2c1810 0%, #3d2314 100%);
+  color: #cd853f;
   border: none;
   padding: 10px 20px;
   border-radius: 20px;
@@ -303,7 +338,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 
+  box-shadow:
     0 4px 15px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(139, 69, 19, 0.2);
   position: relative;
@@ -320,17 +355,22 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   transition: left 0.5s ease;
 }
 
 .toggle-button:hover {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     0 6px 20px rgba(0, 0, 0, 0.4),
     0 0 0 2px rgba(139, 69, 19, 0.3);
-  background: linear-gradient(135deg, #3D2314 0%, #4A2C1A 100%);
-  color: #DEB887;
+  background: linear-gradient(135deg, #3d2314 0%, #4a2c1a 100%);
+  color: #deb887;
 }
 
 .toggle-button:hover::before {

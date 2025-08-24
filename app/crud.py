@@ -1,5 +1,12 @@
 from sqlalchemy.orm import Session
-import models, schemas
+try:
+    # Try importing as if running from root directory
+    import app.models as models
+    import app.schemas as schemas
+except ImportError:
+    # Try importing as if running from within app directory
+    import models
+    import schemas
 import numpy as np
 import face_recognition
 from datetime import datetime
@@ -11,6 +18,35 @@ def get_user(db: Session, user_id: int):
 
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
+
+def get_all_users(db: Session, skip: int = 0, limit: int = 100):
+    """Get all users with pagination"""
+    return db.query(models.User).offset(skip).limit(limit).all()
+
+def update_user(db: Session, user_id: int, user_data: dict):
+    """Update user information"""
+    user = get_user(db, user_id)
+    if user:
+        for key, value in user_data.items():
+            if hasattr(user, key):
+                setattr(user, key, value)
+        db.commit()
+        db.refresh(user)
+    return user
+
+def delete_user(db: Session, user_id: int):
+    """Delete a user and all associated data"""
+    user = get_user(db, user_id)
+    if user:
+        # Delete associated visits
+        db.query(models.Visit).filter(models.Visit.user_id == user_id).delete()
+        # Delete associated user rewards
+        db.query(models.UserReward).filter(models.UserReward.user_id == user_id).delete()
+        # Delete the user
+        db.delete(user)
+        db.commit()
+        return True
+    return False
 
 def get_user_by_face_encoding(db: Session, encoding: np.ndarray, tolerance: float = 0.4):
     import logging
@@ -225,6 +261,48 @@ def check_tier_upgrade(db: Session, user_id: int):
         db.refresh(user)
     
     return user
+
+def check_multiple_based_reward(db: Session, user_id: int, visit_count: int):
+    """Check if user should get a reward based on multiples of tier visit requirements"""
+    user = get_user(db, user_id)
+    if not user:
+        return None
+    
+    # Get all active tiers ordered by visit requirement (highest first for priority)
+    tiers = db.query(models.Tier).filter(models.Tier.is_active == True).order_by(models.Tier.visit_requirement.desc()).all()
+    
+    # Check each tier to see if the current visit count is a multiple of the tier's requirement
+    # Return the highest tier that matches (highest priority)
+    for tier in tiers:
+        if visit_count % tier.visit_requirement == 0:
+            # User has reached a multiple of this tier's requirement
+            rewards = get_rewards_by_tier(db, tier.id)
+            if rewards:
+                # Return the first active reward for this tier
+                return rewards[0], tier
+    
+    return None, None
+
+def check_all_multiple_based_rewards(db: Session, user_id: int, visit_count: int):
+    """Check if user should get rewards based on multiples of tier visit requirements - returns ALL matching rewards"""
+    user = get_user(db, user_id)
+    if not user:
+        return []
+    
+    # Get all active tiers ordered by visit requirement (highest first for priority)
+    tiers = db.query(models.Tier).filter(models.Tier.is_active == True).order_by(models.Tier.visit_requirement.desc()).all()
+    
+    matching_rewards = []
+    
+    # Check each tier to see if the current visit count is a multiple of the tier's requirement
+    for tier in tiers:
+        if visit_count % tier.visit_requirement == 0:
+            # User has reached a multiple of this tier's requirement
+            rewards = get_rewards_by_tier(db, tier.id)
+            if rewards:
+                matching_rewards.append((rewards[0], tier))
+    
+    return matching_rewards
 
 def get_eligible_reward(db: Session, user_id: int):
     """Get the reward that should be given to a user based on their current tier"""

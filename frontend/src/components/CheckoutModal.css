@@ -1,9 +1,4 @@
 .checkout-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   backdrop-filter: blur(12px);
   display: flex;
   justify-content: center;
@@ -14,13 +9,13 @@
 }
 
 .checkout-modal {
-  background: linear-gradient(145deg, #2C1810, #3D2314, #4A2C1A);
+  background: linear-gradient(145deg, #2c1810, #3d2314, #4a2c1a);
   border-radius: 20px;
   padding: 0;
   max-width: 500px;
   width: 100%;
   overflow-y: auto;
-  box-shadow: 
+  box-shadow:
     0 40px 80px rgba(0, 0, 0, 0.6),
     0 0 0 2px rgba(139, 69, 19, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -32,7 +27,7 @@
 .coffee-image-section {
   position: relative;
   height: 150px;
-  background: linear-gradient(135deg, #1A0F0A 0%, #2C1810 50%, #3D2314 100%);
+  background: linear-gradient(135deg, #1a0f0a 0%, #2c1810 50%, #3d2314 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,13 +73,14 @@
   position: absolute;
   width: 4px;
   height: 4px;
-  background: linear-gradient(45deg, #8B4513, #A0522D);
+  background: linear-gradient(45deg, #8b4513, #a0522d);
   border-radius: 50%;
   animation: particleFloat 8s ease-in-out infinite;
 }
 
 @keyframes particleFloat {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(0, 0) scale(1);
     opacity: 0.6;
   }
@@ -106,12 +102,17 @@
 .coffee-backdrop {
   position: absolute;
   inset: -20px;
-  background: radial-gradient(circle at center, rgba(139, 69, 19, 0.3) 0%, transparent 70%);
+  background: radial-gradient(
+    circle at center,
+    rgba(139, 69, 19, 0.3) 0%,
+    transparent 70%
+  );
   animation: backdropPulse 4s ease-in-out infinite;
 }
 
 @keyframes backdropPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.3;
   }
@@ -137,17 +138,18 @@
   position: relative;
   width: 60px;
   height: 60px;
-  background: linear-gradient(145deg, #DEB887, #CD853F);
+  background: linear-gradient(145deg, #deb887, #cd853f);
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  border: 3px solid #8B4513;
-  box-shadow: 
+  border: 3px solid #8b4513;
+  box-shadow:
     0 10px 25px rgba(0, 0, 0, 0.5),
     inset 0 2px 4px rgba(255, 255, 255, 0.2);
   animation: coffeeBrew 2s ease-in-out infinite;
 }
 
 @keyframes coffeeBrew {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1) rotate(0deg);
   }
   50% {
@@ -214,13 +216,14 @@
   left: 8px;
   right: 8px;
   height: 18px;
-  background: linear-gradient(135deg, #654321, #8B4513);
+  background: linear-gradient(135deg, #654321, #8b4513);
   border-radius: 50% 50% 0 0;
   animation: liquidSwirl 4s ease-in-out infinite;
 }
 
 @keyframes liquidSwirl {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg);
   }
   50% {
@@ -235,7 +238,7 @@
   top: 15px;
   width: 15px;
   height: 25px;
-  border: 3px solid #8B4513;
+  border: 3px solid #8b4513;
   border-left: none;
   border-radius: 0 15px 15px 0;
 }
@@ -254,12 +257,19 @@
   animation: beanBounce 2s ease-in-out infinite;
 }
 
-.bean:nth-child(1) { animation-delay: 0s; }
-.bean:nth-child(2) { animation-delay: 0.3s; }
-.bean:nth-child(3) { animation-delay: 0.6s; }
+.bean:nth-child(1) {
+  animation-delay: 0s;
+}
+.bean:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.bean:nth-child(3) {
+  animation-delay: 0.6s;
+}
 
 @keyframes beanBounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) rotate(0deg);
   }
   50% {
@@ -272,7 +282,7 @@
   position: absolute;
   width: 6px;
   height: 6px;
-  background: linear-gradient(45deg, #8B4513, #A0522D);
+  background: linear-gradient(45deg, #8b4513, #a0522d);
   border-radius: 50%;
   animation: cornerPulse 3s ease-in-out infinite;
 }
@@ -290,7 +300,8 @@
 }
 
 @keyframes cornerPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.6;
   }
@@ -302,11 +313,16 @@
 
 /* Yavro Branding Header */
 .modal-header {
-  padding: 20px 25px;
+  padding: 0;
   border-bottom: 2px solid rgba(139, 69, 19, 0.3);
-  background: linear-gradient(135deg, #2C1810, #3D2314, #4A2C1A);
+  background: linear-gradient(135deg, #2c1810, #3d2314, #4a2c1a);
   position: relative;
   z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: min-content;
+  margin: auto;
 }
 
 .header-content {
@@ -319,19 +335,20 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  justify-content: center;
+  width: 100%;
 }
 
 .yavro-icon {
   width: auto;
   height: 28px;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   animation: iconGlow 3s ease-in-out infinite;
   object-fit: contain;
 }
 
 @keyframes iconGlow {
-  0%, 100% {
+  0%,
+  100% {
     filter: drop-shadow(0 0 5px rgba(139, 69, 19, 0.4));
   }
   50% {
@@ -343,25 +360,28 @@
   margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #DEB887;
+  color: #deb887;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   letter-spacing: 1px;
   animation: textGlow 3s ease-in-out infinite;
 }
 
 @keyframes textGlow {
-  0%, 100% {
+  0%,
+  100% {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   }
   50% {
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 1), 0 0 20px rgba(139, 69, 19, 0.4);
+    text-shadow:
+      2px 2px 8px rgba(0, 0, 0, 1),
+      0 0 20px rgba(139, 69, 19, 0.4);
   }
 }
 
 .close-button {
   background: rgba(139, 69, 19, 0.3);
   border: none;
-  color: #DEB887;
+  color: #deb887;
   width: 35px;
   height: 35px;
   border-radius: 50%;
@@ -375,13 +395,13 @@
 .close-button:hover {
   background: rgba(139, 69, 19, 0.5);
   transform: scale(1.1) rotate(90deg);
-  color: #F5DEB3;
+  color: #f5deb3;
 }
 
 .checkout-modal.success {
   text-align: center;
   padding: 40px;
-  background: linear-gradient(145deg, #2C1810, #3D2314, #4A2C1A);
+  background: linear-gradient(145deg, #2c1810, #3d2314, #4a2c1a);
 }
 
 .success-content {
@@ -400,7 +420,7 @@
 }
 
 .success-content h2 {
-  color: #DEB887;
+  color: #deb887;
   margin: 0;
   font-size: 2rem;
   font-weight: 700;
@@ -409,7 +429,7 @@
 }
 
 .success-content p {
-  color: #CD853F;
+  color: #cd853f;
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
@@ -417,11 +437,11 @@
 }
 
 .reward-notification {
-  background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #cd853f 100%);
   padding: 20px;
   border-radius: 15px;
   margin: 20px 0;
-  box-shadow: 
+  box-shadow:
     0 15px 35px rgba(139, 69, 19, 0.5),
     0 0 0 2px rgba(205, 133, 63, 0.4);
   animation: coffeeReward 2s ease-in-out infinite;
@@ -436,13 +456,18 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   animation: coffeeRotate 8s linear infinite;
   pointer-events: none;
 }
 
 .reward-notification h3 {
-  color: #F5DEB3;
+  color: #f5deb3;
   margin: 0 0 12px 0;
   font-size: 1.3rem;
   font-weight: 700;
@@ -451,7 +476,7 @@
 }
 
 .reward-notification p {
-  color: #DEB887;
+  color: #deb887;
   margin: 6px 0;
   font-weight: 700;
   font-size: 1rem;
@@ -460,7 +485,7 @@
 }
 
 .closing-message {
-  color: #CD853F;
+  color: #cd853f;
   font-style: italic;
   font-weight: 600;
   animation: coffeePulse 2s ease-in-out infinite;
@@ -479,14 +504,14 @@
 .customer-avatar {
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #cd853f 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  color: #F5DEB3;
-  box-shadow: 
+  color: #f5deb3;
+  box-shadow:
     0 10px 25px rgba(0, 0, 0, 0.5),
     0 0 0 2px rgba(139, 69, 19, 0.4);
   animation: coffeeBrew 0.8s ease-out;
@@ -494,7 +519,7 @@
 
 .customer-details h3 {
   margin: 0 0 6px 0;
-  color: #DEB887;
+  color: #deb887;
   font-size: 1.3rem;
   font-weight: 700;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
@@ -502,7 +527,7 @@
 
 .customer-details p {
   margin: 3px 0;
-  color: #CD853F;
+  color: #cd853f;
   font-size: 0.9rem;
   font-weight: 500;
 }
@@ -515,11 +540,35 @@
 }
 
 .reward-status h3 {
-  color: #DEB887;
+  color: #deb887;
   margin: 0 0 20px 0;
   font-size: 1.2rem;
   font-weight: 700;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.current-tier {
+  background: linear-gradient(135deg, #3d2314, #4a2c1a);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 2px solid #8b4513;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.current-tier h4 {
+  color: #deb887;
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.current-tier p {
+  color: #cd853f;
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .visit-counter {
@@ -535,8 +584,8 @@
 }
 
 .visit-number {
-  background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
-  color: #F5DEB3;
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #cd853f 100%);
+  color: #f5deb3;
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -545,31 +594,31 @@
   justify-content: center;
   font-size: 1.5rem;
   font-weight: bold;
-  box-shadow: 
+  box-shadow:
     0 10px 25px rgba(0, 0, 0, 0.5),
     0 0 0 2px rgba(139, 69, 19, 0.4);
   animation: coffeePulse 3s ease-in-out infinite;
 }
 
 .visit-label {
-  color: #DEB887;
+  color: #deb887;
   font-weight: 700;
   font-size: 1rem;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .progress-bar {
-  background: linear-gradient(145deg, #2C1810, #3D2314);
+  background: linear-gradient(145deg, #2c1810, #3d2314);
   height: 12px;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     inset 0 2px 4px rgba(0, 0, 0, 0.4),
     0 0 0 2px rgba(139, 69, 19, 0.3);
 }
 
 .progress-fill {
-  background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #cd853f 100%);
   height: 100%;
   transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 0 10px rgba(139, 69, 19, 0.6);
@@ -584,25 +633,30 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   animation: progressShine 2s ease-in-out infinite;
 }
 
 .visits-remaining {
-  color: #CD853F;
+  color: #cd853f;
   font-size: 0.9rem;
   text-align: center;
   font-weight: 600;
 }
 
 .reward-alert {
-  background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #cd853f 100%);
   padding: 15px;
   border-radius: 12px;
   margin-top: 15px;
   text-align: center;
   animation: coffeeReward 2s ease-in-out infinite;
-  box-shadow: 
+  box-shadow:
     0 10px 25px rgba(139, 69, 19, 0.5),
     0 0 0 2px rgba(205, 133, 63, 0.4);
   position: relative;
@@ -616,13 +670,18 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: conic-gradient(from 180deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: conic-gradient(
+    from 180deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   animation: coffeeRotate 6s linear infinite reverse;
   pointer-events: none;
 }
 
 .reward-alert h4 {
-  color: #F5DEB3;
+  color: #f5deb3;
   margin: 0 0 6px 0;
   font-size: 1rem;
   font-weight: 700;
@@ -631,12 +690,28 @@
 }
 
 .reward-alert p {
-  color: #DEB887;
+  color: #deb887;
   margin: 0;
   font-weight: 700;
   position: relative;
   z-index: 1;
   font-size: 0.9rem;
+}
+
+.spinner-hint {
+  color: #f5deb3 !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+  animation: coffeeGlow 2s ease-in-out infinite alternate;
+}
+
+.spinner-note {
+  color: #f5deb3 !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+  animation: coffeeGlow 2s ease-in-out infinite alternate;
 }
 
 .checkout-actions {
@@ -646,12 +721,12 @@
 }
 
 .error-message {
-  background: linear-gradient(135deg, #4A2C1A, #3D2314);
-  color: #FFB6C1;
+  background: linear-gradient(135deg, #4a2c1a, #3d2314);
+  color: #ffb6c1;
   padding: 15px;
   border-radius: 12px;
   margin-bottom: 20px;
-  border-left: 5px solid #8B4513;
+  border-left: 5px solid #8b4513;
   font-weight: 600;
   box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
   animation: shakeError 0.5s ease-in-out;
@@ -663,7 +738,8 @@
   gap: 15px;
 }
 
-.cancel-button, .checkout-button {
+.cancel-button,
+.checkout-button {
   flex: 1;
   padding: 15px 20px;
   border-radius: 20px;
@@ -679,38 +755,39 @@
 }
 
 .cancel-button {
-  background: linear-gradient(135deg, #2C1810 0%, #3D2314 100%);
-  color: #CD853F;
-  box-shadow: 
+  background: linear-gradient(135deg, #2c1810 0%, #3d2314 100%);
+  color: #cd853f;
+  box-shadow:
     0 8px 25px rgba(0, 0, 0, 0.5),
     0 0 0 1px rgba(139, 69, 19, 0.3);
 }
 
 .cancel-button:hover:not(:disabled) {
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 
+  box-shadow:
     0 12px 30px rgba(0, 0, 0, 0.7),
     0 0 0 2px rgba(139, 69, 19, 0.4);
-  background: linear-gradient(135deg, #3D2314 0%, #4A2C1A 100%);
+  background: linear-gradient(135deg, #3d2314 0%, #4a2c1a 100%);
 }
 
 .checkout-button {
-  background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
-  color: #F5DEB3;
-  box-shadow: 
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #cd853f 100%);
+  color: #f5deb3;
+  box-shadow:
     0 8px 25px rgba(0, 0, 0, 0.5),
     0 0 0 1px rgba(139, 69, 19, 0.3);
 }
 
 .checkout-button:hover:not(:disabled) {
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 
+  box-shadow:
     0 12px 30px rgba(0, 0, 0, 0.7),
     0 0 0 2px rgba(139, 69, 19, 0.4);
-  background: linear-gradient(135deg, #A0522D 0%, #CD853F 50%, #DEB887 100%);
+  background: linear-gradient(135deg, #a0522d 0%, #cd853f 50%, #deb887 100%);
 }
 
-.cancel-button:disabled, .checkout-button:disabled {
+.cancel-button:disabled,
+.checkout-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
@@ -719,16 +796,20 @@
 
 /* Coffee-themed animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(50px) scale(0.9);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
@@ -750,45 +831,62 @@
 }
 
 @keyframes coffeeReward {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
-    box-shadow: 
+    box-shadow:
       0 10px 25px rgba(139, 69, 19, 0.5),
       0 0 0 2px rgba(205, 133, 63, 0.4);
   }
   50% {
     transform: scale(1.05);
-    box-shadow: 
+    box-shadow:
       0 15px 35px rgba(139, 69, 19, 0.7),
       0 0 0 3px rgba(205, 133, 63, 0.6);
   }
 }
 
 @keyframes coffeeRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes coffeePulse {
-  0%, 100% { 
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
-  50% { 
+  50% {
     opacity: 0.8;
     transform: scale(1.05);
   }
 }
 
 @keyframes progressShine {
-  0% { left: -100%; }
-  100% { left: 100%; }
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
 }
 
 @keyframes shakeError {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
 }
 
 @keyframes fadeInUp {
@@ -807,68 +905,70 @@
   .checkout-modal-overlay {
     padding: 5px;
   }
-  
+
   .checkout-modal {
-    max-height: "min-content";
+    max-height: 'min-content';
     border-radius: 15px;
     max-width: 450px;
   }
-  
+
   .coffee-image-section {
     height: 120px;
   }
-  
+
   .coffee-container {
     width: 120px;
     height: 120px;
   }
-  
+
   .coffee-cup {
     width: 50px;
     height: 50px;
   }
-  
+
   .modal-header {
-    padding: 15px 20px;
+    padding: 0;
   }
-  
-  .customer-info, .reward-status, .checkout-actions {
+
+  .customer-info,
+  .reward-status,
+  .checkout-actions {
     padding: 20px 25px;
   }
-  
+
   .action-buttons {
     flex-direction: column;
     gap: 12px;
   }
-  
+
   .customer-info {
     flex-direction: column;
     text-align: center;
     gap: 15px;
   }
-  
+
   .customer-avatar {
     width: 50px;
     height: 50px;
     font-size: 1.8rem;
   }
-  
+
   .success-content h2 {
     font-size: 1.8rem;
   }
-  
+
   .success-icon {
     font-size: 3rem;
   }
-  
+
   .reward-notification {
     padding: 15px;
   }
-  
+
   .reward-notification h3 {
     font-size: 1.1rem;
   }
-  
+
   .reward-notification p {
     font-size: 0.9rem;
   }
@@ -877,31 +977,31 @@
 /* MUI Icon Styles */
 .success-icon .MuiSvgIcon-root {
   font-size: 3rem;
-  color: #DEB887;
+  color: #deb887;
   animation: celebrationBounce 1s ease-in-out infinite;
 }
 
 .reward-notification h3 .MuiSvgIcon-root,
 .reward-alert h4 .MuiSvgIcon-root {
   font-size: 1.5rem;
-  color: #DEB887;
+  color: #deb887;
   margin-right: 8px;
   vertical-align: middle;
 }
 
 .close-button .MuiSvgIcon-root {
   font-size: 1.5rem;
-  color: #CD853F;
+  color: #cd853f;
 }
 
 .customer-avatar .MuiSvgIcon-root {
   font-size: 2.5rem;
-  color: #DEB887;
+  color: #deb887;
 }
 
 .reward-status h3 .MuiSvgIcon-root {
   font-size: 1.3rem;
-  color: #DEB887;
+  color: #deb887;
   margin-right: 8px;
   vertical-align: middle;
 }
@@ -913,7 +1013,8 @@
 }
 
 @keyframes celebrationBounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
