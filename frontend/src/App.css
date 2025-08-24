@@ -1,0 +1,242 @@
+.App {
+  text-align: center;
+  min-height: 100vh;
+  padding: 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.App::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(139, 69, 19, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(160, 82, 45, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(205, 133, 63, 0.2) 0%, transparent 50%);
+  pointer-events: none;
+  animation: coffeeSteam 8s ease-in-out infinite;
+}
+
+.App-header {
+  margin-bottom: 20px;
+  color: white;
+  position: relative;
+  z-index: 1;
+}
+
+.yavro-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  color: white;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.yavro-logo {
+  width: auto;
+  height: 40px;
+  border-radius: 8px;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.5),
+    0 0 0 2px rgba(139, 69, 19, 0.4);
+  animation: logoGlow 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(222, 184, 135, 0.5));
+  object-fit: contain;
+}
+
+.yavro-text h1 {
+  font-size: 2.5rem;
+  margin: 0 0 5px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  background: linear-gradient(45deg, #DEB887, #CD853F, #A0522D);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: coffeeGlow 3s ease-in-out infinite alternate;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.yavro-text p {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  animation: fadeInUp 1s ease-out 0.5s both;
+  color: #DEB887;
+  font-weight: 500;
+}
+
+.App-main {
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Coffee-themed animations */
+@keyframes coffeeSteam {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(-20px) scale(1.1);
+  }
+}
+
+@keyframes coffeeGlow {
+  0% {
+    filter: drop-shadow(0 0 5px rgba(222, 184, 135, 0.5));
+  }
+  100% {
+    filter: drop-shadow(0 0 20px rgba(222, 184, 135, 0.8));
+  }
+}
+
+@keyframes logoGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(222, 184, 135, 0.5));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(222, 184, 135, 0.8));
+    transform: scale(1.05);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes coffeeBrew {
+  0% {
+    transform: scale(0.8) rotate(-5deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05) rotate(2deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Responsive design for 768x1366 */
+@media (max-width: 768px) {
+  .App {
+    padding: 5px;
+  }
+  
+  .yavro-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .yavro-logo {
+    width: auto;
+    height: 35px;
+  }
+  
+  .yavro-text h1 {
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+  
+  .yavro-text p {
+    font-size: 0.9rem;
+  }
+  
+  .App-header {
+    margin-bottom: 15px;
+  }
+  
+  .App-main {
+  }
+}
+
+/* Dashboard styles */
+.dashboard-button {
+  background: rgba(52, 152, 219, 0.9);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-button:hover {
+  background: rgba(41, 128, 185, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.back-button {
+  background: #95a5a6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  transition: background 0.3s ease;
+}
+
+.back-button:hover {
+  background: #7f8c8d;
+}
+
+@media (max-width: 768px) {
+  .yavro-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .dashboard-button {
+    font-size: 0.8rem;
+    padding: 8px 16px;
+  }
+  
+  .dashboard-container {
+    padding: 10px;
+  }
+}
