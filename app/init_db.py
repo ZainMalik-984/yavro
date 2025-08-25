@@ -1,7 +1,7 @@
 
 try:
     # Try importing as if running from root directory
-    from app.database import engine, Base
+    from database import engine, Base
 except ImportError:
     # Try importing as if running from within app directory
     from database import engine, Base

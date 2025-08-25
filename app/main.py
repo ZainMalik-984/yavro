@@ -1,7 +1,6 @@
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, Depends, Form
 from fastapi.responses import JSONResponse
-from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import models
@@ -23,15 +22,14 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5500", "http://localhost:5500",
-                   "http://localhost:3000"],  # Allow React dev server
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000"
+    ],  # Allow React dev server
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-app.mount("/frontend", StaticFiles(directory="../frontend",
-          html=True), name="frontend")
 
 
 def get_face_encoding(file: UploadFile) -> np.ndarray:
@@ -102,6 +100,7 @@ def register_user(
     name: str = Form(...),
     email: str = Form(...),
     address: str = Form(...),
+    phone_number: str = Form(...),
     db: Session = Depends(database.get_db)
 ):
     import logging
@@ -111,7 +110,8 @@ def register_user(
         if db_user:
             raise HTTPException(
                 status_code=400, detail="Email already registered")
-        user_data = schemas.UserCreate(name=name, email=email, address=address)
+        user_data = schemas.UserCreate(
+            name=name, email=email, address=address, phone_number=phone_number)
         user = crud.create_user(db=db, user=user_data, face_encoding=encoding)
         return schemas.User.from_orm(user)
     except Exception as e:
@@ -124,6 +124,9 @@ def register_user(
 def checkout_user(user_id: int, db: Session = Depends(database.get_db)):
     """Create a visit for a user and handle tier-based reward system"""
     try:
+        # Import SMS service
+        from sms_service import sms_service
+
         # Check if user exists
         user = crud.get_user(db, user_id=user_id)
         if not user:
@@ -143,21 +146,30 @@ def checkout_user(user_id: int, db: Session = Depends(database.get_db)):
             # Check if user should get rewards based on multiples of tier visit requirements
             matching_rewards = crud.check_all_multiple_based_rewards(
                 db, user_id, updated_user.visit_count)
-            
+
             # For now, we'll use the highest priority reward (first in the list)
             # In the future, you could modify this to handle multiple rewards
             if matching_rewards:
-                reward, tier = matching_rewards[0]  # Get the highest priority reward
+                # Get the highest priority reward
+                reward, tier = matching_rewards[0]
+
+                # Send SMS notification for reward earned
+                if user.phone_number:
+                    sms_service.send_reward_notification(
+                        user.phone_number, user.name, reward.reward_type,
+                        tier.name, updated_user.visit_count
+                    )
+
                 if reward.reward_type == "spinner":
                     message += (f"! 🎉 Congratulations! You've reached "
-                               f"{updated_user.visit_count} visits! Spin the wheel "
-                               f"to get your {tier.name} tier reward!")
+                                f"{updated_user.visit_count} visits! Spin the wheel "
+                                f"to get your {tier.name} tier reward!")
                     reward_earned = {
                         "type": "spinner",
                         "reward_id": reward.id,
                         "tier_name": tier.name,
                         "message": (f"Spin the wheel to get your "
-                                  f"{tier.name} tier reward!")
+                                    f"{tier.name} tier reward!")
                     }
                 else:
                     # Create user reward record
@@ -173,8 +185,8 @@ def checkout_user(user_id: int, db: Session = Depends(database.get_db)):
 
                     if reward.reward_type == "free_coffee":
                         message += (f"! 🎉 Congratulations! You've earned a "
-                                  f"FREE COFFEE at {tier.name} tier "
-                                  f"(visit #{updated_user.visit_count})!")
+                                    f"FREE COFFEE at {tier.name} tier "
+                                    f"(visit #{updated_user.visit_count})!")
                         reward_earned = {
                             "type": "free_coffee",
                             "reward_id": reward.id,
@@ -184,8 +196,8 @@ def checkout_user(user_id: int, db: Session = Depends(database.get_db)):
                         }
                     elif reward.reward_type == "discount":
                         message += (f"! 🎉 Congratulations! You've earned a "
-                                  f"{reward.value}% DISCOUNT at {tier.name} tier "
-                                  f"(visit #{updated_user.visit_count})!")
+                                    f"{reward.value}% DISCOUNT at {tier.name} tier "
+                                    f"(visit #{updated_user.visit_count})!")
                         reward_earned = {
                             "type": "discount",
                             "reward_id": reward.id,
@@ -193,7 +205,7 @@ def checkout_user(user_id: int, db: Session = Depends(database.get_db)):
                             "tier_name": tier.name,
                             "discount_percentage": reward.value,
                             "message": (f"{reward.value}% discount earned at "
-                                      f"{tier.name} tier!")
+                                        f"{tier.name} tier!")
                         }
             else:
                 # Check next tier progress
@@ -205,6 +217,13 @@ def checkout_user(user_id: int, db: Session = Depends(database.get_db)):
                 if next_tier:
                     visits_remaining = next_tier.visit_requirement - updated_user.visit_count
                     message += f". You need {visits_remaining} more visit{'s' if visits_remaining != 1 else ''} to reach {next_tier.name} tier."
+
+                    # Send SMS notification for tier progress
+                    if user.phone_number:
+                        sms_service.send_tier_progress_notification(
+                            user.phone_number, user.name, updated_user.visit_count,
+                            next_tier.name, visits_remaining
+                        )
                 else:
                     message += ". You've reached the highest tier!"
 
@@ -283,11 +302,13 @@ def get_user(user_id: int, db: Session = Depends(database.get_db)):
     # Return only serializable fields using Pydantic schema
     return schemas.User.from_orm(user)
 
+
 @app.get("/users/")
 def get_users(skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)):
     """Get all users with pagination"""
     users = crud.get_all_users(db, skip=skip, limit=limit)
     return [schemas.User.from_orm(user) for user in users]
+
 
 @app.put("/user/{user_id}")
 def update_user(user_id: int, user_update: schemas.UserUpdate, db: Session = Depends(database.get_db)):
@@ -296,6 +317,7 @@ def update_user(user_id: int, user_update: schemas.UserUpdate, db: Session = Dep
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return schemas.User.from_orm(user)
+
 
 @app.delete("/user/{user_id}")
 def delete_user(user_id: int, db: Session = Depends(database.get_db)):
@@ -361,6 +383,12 @@ def delete_tier(tier_id: int, db: Session = Depends(database.get_db)):
     return {"message": "Tier deleted successfully"}
 
 # Reward management endpoints
+
+
+@app.get("/health")
+def health_check():
+    """Health check endpoint"""
+    return {"status": "healthy", "message": "Face Recognition API is running"}
 
 
 @app.get("/rewards/")

@@ -13,21 +13,21 @@ if os.path.exists(config_file):
                 os.environ[key] = value
 
 # Database configuration
-# Use SQLite for simplicity, or PostgreSQL if configured
-DB_TYPE = os.getenv("DB_TYPE", "sqlite")
+# Use PostgreSQL by default
+DB_TYPE = os.getenv("DB_TYPE", "postgresql")
 
 if DB_TYPE == "postgresql":
     # PostgreSQL connection configuration
-    DB_USER = os.getenv("DB_USER", "postgres")
-    DB_PASSWORD = os.getenv("DB_PASSWORD", "postgres")
+    DB_USER = os.getenv("DB_USER", "cafe_db_user")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "cafe_password123")
     DB_HOST = os.getenv("DB_HOST", "localhost")
     DB_PORT = os.getenv("DB_PORT", "5432")
     DB_NAME = os.getenv("DB_NAME", "cafe_users")
-    
+
     # PostgreSQL connection URL
     SQLALCHEMY_DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 else:
-    # SQLite connection URL (default)
+    # SQLite connection URL (fallback)
     SQLALCHEMY_DATABASE_URL = "sqlite:///./cafe_users.db"
 
 # Create engine with database-specific settings

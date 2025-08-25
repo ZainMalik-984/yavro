@@ -1,56 +1,56 @@
+#!/usr/bin/env python3
+"""
+Database migration script to add phone_number column to users table
+"""
+
+import sys
+import os
+
+# Add the app directory to the Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Load environment variables from config file if it exists
+config_file = "../config.env"
+if os.path.exists(config_file):
+    with open(config_file, 'r') as f:
+        for line in f:
+            if line.strip() and not line.startswith('#'):
+                key, value = line.strip().split('=', 1)
+                os.environ[key] = value
+
+from database import engine
 from sqlalchemy import text
-from database import engine, SessionLocal
-from models import Base
-import logging
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
-def update_database():
-    """Update database schema to include Visit table and visit_count column"""
+def add_phone_number_column():
+    """Add phone_number column to users table if it doesn't exist"""
     try:
-        # Create all tables (this will create the Visit table)
-        Base.metadata.create_all(bind=engine)
-        logger.info("Created all tables")
-        
-        # Add visit_count column to existing users table if it doesn't exist
+        # Check if phone_number column already exists (PostgreSQL compatible)
         with engine.connect() as connection:
-            # Check if visit_count column exists
             result = connection.execute(text("""
                 SELECT column_name 
                 FROM information_schema.columns 
-                WHERE table_name = 'users' AND column_name = 'visit_count'
+                WHERE table_name = 'users' AND column_name = 'phone_number'
             """))
             
-            if not result.fetchone():
-                # Add visit_count column
-                connection.execute(text("ALTER TABLE users ADD COLUMN visit_count INTEGER DEFAULT 0"))
-                connection.execute(text("ALTER TABLE users ADD COLUMN created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP"))
-                logger.info("Added visit_count and created_at columns to users table")
-            else:
-                logger.info("visit_count column already exists")
+            if result.fetchone():
+                print("phone_number column already exists in users table")
+                return
             
-            # Check if created_at column exists
-            result = connection.execute(text("""
-                SELECT column_name 
-                FROM information_schema.columns 
-                WHERE table_name = 'users' AND column_name = 'created_at'
+            # Add phone_number column
+            connection.execute(text("""
+                ALTER TABLE users 
+                ADD COLUMN phone_number VARCHAR
             """))
-            
-            if not result.fetchone():
-                # Add created_at column
-                connection.execute(text("ALTER TABLE users ADD COLUMN created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP"))
-                logger.info("Added created_at column to users table")
-            else:
-                logger.info("created_at column already exists")
-            
             connection.commit()
-        
-        logger.info("Database update completed successfully!")
-        
+            print("Successfully added phone_number column to users table")
+            
     except Exception as e:
-        logger.error(f"Error updating database: {str(e)}")
+        print(f"Error adding phone_number column: {str(e)}")
         raise
 
+
 if __name__ == "__main__":
-    update_database()
+    print("Adding phone_number column to users table...")
+    add_phone_number_column()
+    print("Database migration completed!")

@@ -14,6 +14,7 @@ class User(Base):
     name = Column(String, index=True)
     email = Column(String, unique=True, index=True)
     address = Column(String)
+    phone_number = Column(String)  # Phone number for SMS notifications
     face_encoding = Column(LargeBinary)  # Binary data type for face encodings
     visit_count = Column(Integer, default=0)  # Track total visits for rewards
     current_tier = Column(Integer, default=1)  # Current tier level
