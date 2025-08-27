@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { UserReward, User } from '../types';
-import { getUserRewards, markUserRewardAsUsed, getUser } from '../services/api';
+import {
+  getUserRewards,
+  markUserRewardAsUsed,
+  getUser,
+  getAllUsers,
+} from '../services/api';
 import './UserRewards.css';
 
 const UserRewards: React.FC = () => {
@@ -27,37 +32,10 @@ const UserRewards: React.FC = () => {
   const loadUsers = async () => {
     try {
       setLoading(true);
-      // For now, we'll use a mock approach since we don't have a get all users endpoint
-      // In a real app, you'd have an endpoint to get all users
-      const mockUsers: User[] = [
-        {
-          id: 1,
-          name: 'John Doe',
-          email: 'john@example.com',
-          address: '123 Main St',
-          visit_count: 5,
-          current_tier: 5,
-        },
-        {
-          id: 2,
-          name: 'Jane Smith',
-          email: 'jane@example.com',
-          address: '456 Oak Ave',
-          visit_count: 12,
-          current_tier: 10,
-        },
-        {
-          id: 3,
-          name: 'Bob Johnson',
-          email: 'bob@example.com',
-          address: '789 Pine Rd',
-          visit_count: 18,
-          current_tier: 15,
-        },
-      ];
-      setUsers(mockUsers);
-      if (mockUsers.length > 0) {
-        setSelectedUserId(mockUsers[0].id);
+      const usersData = await getAllUsers();
+      setUsers(usersData);
+      if (usersData.length > 0) {
+        setSelectedUserId(usersData[0].id);
       }
     } catch (error) {
       console.error('Error loading users:', error);

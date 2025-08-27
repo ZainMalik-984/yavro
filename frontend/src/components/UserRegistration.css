@@ -104,7 +104,6 @@
 
 .registration-content {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 25px;
   align-items: start;
   position: relative;

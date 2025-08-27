@@ -14,7 +14,7 @@ A modern React application for recognizing customers and managing a reward syste
 
 - Node.js (v14 or higher)
 - npm or yarn
-- Backend API running on `http://127.0.0.1:8000`
+- Backend API running on `http://localhost:8000`
 
 ## Installation
 
@@ -122,7 +122,7 @@ Note: Camera access requires HTTPS in production or localhost for development.
 
 ### API Connection Issues:
 
-- Verify backend is running on `http://127.0.0.1:8000`
+- Verify backend is running on `http://localhost:8000`
 - Check CORS settings in backend
 - Ensure all required endpoints are available
 

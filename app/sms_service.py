@@ -25,11 +25,25 @@ class SMSService:
             formatted_number = ''.join(
                 c for c in to_number if c.isdigit() or c == '+')
             if not formatted_number.startswith('+'):
-                if formatted_number.startswith('1') and len(formatted_number) == 11:
+                # Handle Pakistani numbers (+92)
+                if (formatted_number.startswith('0') and
+                        len(formatted_number) == 11):
+                    # Remove leading 0 and add +92 
+                    # (e.g., 03104488799 -> +923104488799)
+                    formatted_number = '+92' + formatted_number[1:]
+                elif (formatted_number.startswith('92') and
+                        len(formatted_number) == 12):
+                    # Already has 92, just add + 
+                    # (e.g., 923104488799 -> +923104488799)
                     formatted_number = '+' + formatted_number
+                elif len(formatted_number) == 10:
+                    # 10-digit number, add +92 
+                    # (e.g., 3104488799 -> +923104488799)
+                    formatted_number = '+92' + formatted_number
                 else:
-                    formatted_number = '+1' + formatted_number
-
+                    # Default to Pakistani format
+                    formatted_number = '+92' + formatted_number
+            print("HHHHHHHHHHHHHHHHHHH", formatted_number, self.from_number, message)
             message = self.client.messages.create(
                 body=message,
                 from_=self.from_number,

@@ -3,6 +3,7 @@ export interface User {
   name: string;
   email: string;
   address: string;
+  phone_number: string;
   visit_count: number;
   current_tier: number;
   created_at?: string;
@@ -12,6 +13,7 @@ export interface UserCreate {
   name: string;
   email: string;
   address: string;
+  phone_number: string;
 }
 
 export interface Visit {

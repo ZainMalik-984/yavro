@@ -9,6 +9,7 @@ import {
   Person,
   Email,
   Home,
+  Phone,
 } from '@mui/icons-material';
 import { registerUser } from '../services/api';
 import { User, UserCreate } from '../types';
@@ -33,6 +34,7 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({
     name: '',
     email: '',
     address: '',
+    phone_number: '',
   });
   const [error, setError] = useState<string>('');
 
@@ -52,7 +54,12 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({
       return;
     }
 
-    if (!formData.name || !formData.email || !formData.address) {
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.address ||
+      !formData.phone_number
+    ) {
       setError('Please fill in all customer information');
       return;
     }
@@ -87,43 +94,7 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({
         </h2>
 
         <div className='registration-content'>
-          {/* <div className="camera-section">
-            <h3>
-              <CameraAlt className="section-icon" />
-              Capture Customer Photo
-            </h3>
-            <Webcam
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              width={300}
-              height={225}
-              className="webcam"
-            />
-            <button 
-              onClick={captureImage}
-              className="capture-button"
-              disabled={isLoading}
-            >
-              <PhotoCamera className="button-icon" />
-              Capture Photo
-            </button>
-            
-            {capturedImage && (
-              <div className="captured-image">
-                <img src={capturedImage} alt="Captured" />
-                <span>
-                  <CheckCircle className="success-icon" />
-                  Photo captured successfully
-                </span>
-              </div>
-            )}
-          </div> */}
-
           <div className='form-section'>
-            <h3>
-              <PersonAdd className='section-icon' />
-              Customer Information
-            </h3>
             <form onSubmit={handleSubmit}>
               <div className='form-group'>
                 <label htmlFor='name'>
@@ -170,6 +141,22 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({
                   onChange={handleInputChange}
                   required
                   placeholder="Enter customer's address"
+                />
+              </div>
+
+              <div className='form-group'>
+                <label htmlFor='phone_number'>
+                  <Phone className='label-icon' />
+                  Phone Number *
+                </label>
+                <input
+                  type='tel'
+                  id='phone_number'
+                  name='phone_number'
+                  value={formData.phone_number}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Enter customer's phone number"
                 />
               </div>
 

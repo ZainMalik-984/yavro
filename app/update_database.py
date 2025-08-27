@@ -3,8 +3,10 @@
 Database migration script to add phone_number column to users table
 """
 
+from app.database import engine
 import sys
 import os
+from sqlalchemy import text
 
 # Add the app directory to the Python path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -18,9 +20,6 @@ if os.path.exists(config_file):
                 key, value = line.strip().split('=', 1)
                 os.environ[key] = value
 
-from database import engine
-from sqlalchemy import text
-
 
 def add_phone_number_column():
     """Add phone_number column to users table if it doesn't exist"""
@@ -32,11 +31,11 @@ def add_phone_number_column():
                 FROM information_schema.columns 
                 WHERE table_name = 'users' AND column_name = 'phone_number'
             """))
-            
+
             if result.fetchone():
                 print("phone_number column already exists in users table")
                 return
-            
+
             # Add phone_number column
             connection.execute(text("""
                 ALTER TABLE users 
@@ -44,7 +43,7 @@ def add_phone_number_column():
             """))
             connection.commit()
             print("Successfully added phone_number column to users table")
-            
+
     except Exception as e:
         print(f"Error adding phone_number column: {str(e)}")
         raise

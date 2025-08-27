@@ -4,7 +4,7 @@ Initialize the tier-based reward system with default tiers and rewards
 """
 
 from sqlalchemy.orm import Session
-import models, schemas, database
+from app import models, schemas, database
 
 def init_tier_system():
     """Initialize the tier system with default tiers and rewards"""

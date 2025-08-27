@@ -3,10 +3,10 @@ from fastapi import FastAPI, UploadFile, File, HTTPException, Depends, Form
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-import models
-import schemas
-import crud
-import database
+from app import models
+from app import schemas
+from app import crud
+from app import database
 import face_recognition
 import numpy as np
 import logging
@@ -125,7 +125,7 @@ def checkout_user(user_id: int, db: Session = Depends(database.get_db)):
     """Create a visit for a user and handle tier-based reward system"""
     try:
         # Import SMS service
-        from sms_service import sms_service
+        from app.sms_service import sms_service
 
         # Check if user exists
         user = crud.get_user(db, user_id=user_id)
@@ -211,7 +211,7 @@ def checkout_user(user_id: int, db: Session = Depends(database.get_db)):
                 # Check next tier progress
                 next_tier = db.query(models.Tier).filter(
                     models.Tier.visit_requirement > updated_user.visit_count,
-                    models.Tier.is_active == True
+                    models.Tier.is_active
                 ).order_by(models.Tier.visit_requirement).first()
 
                 if next_tier:

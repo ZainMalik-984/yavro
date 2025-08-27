@@ -10,9 +10,9 @@ try:
     import app.database as database
 except ImportError:
     # Try importing as if running from within app directory
-    import schemas
-    import crud
-    import database
+    from app import schemas
+    from app import crud
+    from app import database
 
 
 def init_tier_system():

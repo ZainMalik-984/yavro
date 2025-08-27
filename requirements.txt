@@ -3,7 +3,9 @@ uvicorn
 sqlalchemy
 pydantic
 face_recognition
+git+https://github.com/ageitgey/face_recognition_models
 pillow
 numpy
 psycopg2-binary
 python-multipart
+twilio

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-import models
-import schemas
+from app import models
+from app import schemas
 import numpy as np
 import face_recognition
 from datetime import datetime

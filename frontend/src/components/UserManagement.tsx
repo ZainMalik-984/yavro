@@ -22,6 +22,7 @@ const UserManagement: React.FC = () => {
     name: '',
     email: '',
     address: '',
+    phone_number: '',
   });
 
   useEffect(() => {
@@ -48,6 +49,7 @@ const UserManagement: React.FC = () => {
       name: user.name,
       email: user.email,
       address: user.address,
+      phone_number: user.phone_number,
     });
     setShowEditModal(true);
   };
@@ -144,6 +146,7 @@ const UserManagement: React.FC = () => {
               <th>ID</th>
               <th>Name</th>
               <th>Email</th>
+              <th>Phone</th>
               <th>Address</th>
               <th>Visits</th>
               <th>Tier</th>
@@ -157,6 +160,7 @@ const UserManagement: React.FC = () => {
                 <td>{user.id}</td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
+                <td>{user.phone_number || 'N/A'}</td>
                 <td>{user.address}</td>
                 <td>
                   <span className='visit-count'>{user.visit_count || 0}</span>
@@ -241,6 +245,17 @@ const UserManagement: React.FC = () => {
                   value={editForm.address}
                   onChange={e =>
                     setEditForm({ ...editForm, address: e.target.value })
+                  }
+                />
+              </div>
+              <div className='form-group'>
+                <label htmlFor='edit-phone'>Phone Number</label>
+                <input
+                  type='tel'
+                  id='edit-phone'
+                  value={editForm.phone_number}
+                  onChange={e =>
+                    setEditForm({ ...editForm, phone_number: e.target.value })
                   }
                 />
               </div>

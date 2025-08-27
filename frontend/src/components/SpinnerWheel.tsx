@@ -185,7 +185,7 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
     <div className='spinner-wheel-overlay'>
       <div className='spinner-wheel-container'>
         <div className='spinner-header'>
-          <h2>🎰 Spin the Wheel! 🎰</h2>
+          <h2>Spin the Wheel!</h2>
           <p>Spin to win your reward!</p>
         </div>
 
@@ -220,15 +220,8 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
               onClick={spinWheel}
               disabled={isSpinning}
             >
-              🎰 SPIN THE WHEEL! 🎰
+              SPIN THE WHEEL!
             </button>
-          )}
-
-          {isSpinning && (
-            <div className='spinning-message'>
-              <div className='spinner-animation'>🎰</div>
-              <p>Spinning...</p>
-            </div>
           )}
 
           {showResult && selectedOption && (

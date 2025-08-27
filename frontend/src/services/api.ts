@@ -14,7 +14,7 @@ import {
   SpinnerResponse,
 } from '../types';
 
-const API_BASE_URL = 'http://127.0.0.1:8000';
+const API_BASE_URL = 'http://localhost:8000';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -45,6 +45,7 @@ export const registerUser = async (
   formData.append('name', userData.name);
   formData.append('email', userData.email);
   formData.append('address', userData.address);
+  formData.append('phone_number', userData.phone_number);
 
   const response = await api.post('/register/', formData, {
     headers: {
