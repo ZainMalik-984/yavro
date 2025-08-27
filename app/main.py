@@ -303,6 +303,37 @@ def get_user(user_id: int, db: Session = Depends(database.get_db)):
     return schemas.User.from_orm(user)
 
 
+@app.get("/user/email/{email}")
+def get_user_by_email(email: str, db: Session = Depends(database.get_db)):
+    """Get user by email address"""
+    user = crud.get_user_by_email(db, email=email)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return schemas.User.from_orm(user)
+
+
+@app.post("/register/no-image/")
+def register_user_without_image(
+    user_data: schemas.UserCreate,
+    db: Session = Depends(database.get_db)
+):
+    """Register a new user without face image"""
+    try:
+        # Check if email already exists
+        db_user = crud.get_user_by_email(db, email=user_data.email)
+        if db_user:
+            raise HTTPException(
+                status_code=400, detail="Email already registered")
+        
+        # Create user without face encoding
+        user = crud.create_user_without_face(db=db, user=user_data)
+        return schemas.User.from_orm(user)
+    except Exception as e:
+        logging.exception("Error in /register/no-image endpoint")
+        raise HTTPException(
+            status_code=500, detail=f"Internal Server Error: {str(e)}")
+
+
 @app.get("/users/")
 def get_users(skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)):
     """Get all users with pagination"""

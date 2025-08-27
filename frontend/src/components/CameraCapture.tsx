@@ -4,6 +4,8 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import CircularProgress from '@mui/material/CircularProgress';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import CloseIcon from '@mui/icons-material/Close';
+import EmailIcon from '@mui/icons-material/Email';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { recognizeUser } from '../services/api';
 import { User } from '../types';
 import './CameraCapture.css';
@@ -11,6 +13,8 @@ import './CameraCapture.css';
 interface CameraCaptureProps {
   onUserRecognized: (user: User) => void;
   onUserNotFound: (imageSrc: string) => void;
+  onEmailSearch: () => void;
+  onRegisterWithoutImage: () => void;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
 }
@@ -18,6 +22,8 @@ interface CameraCaptureProps {
 const CameraCapture: React.FC<CameraCaptureProps> = ({
   onUserRecognized,
   onUserNotFound,
+  onEmailSearch,
+  onRegisterWithoutImage,
   isLoading,
   setIsLoading,
 }) => {
@@ -93,6 +99,26 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
                 <CameraAltIcon className='button-icon' />
               </>
             )}
+          </button>
+        </div>
+
+        <div className='alternative-actions'>
+          <button
+            onClick={onEmailSearch}
+            disabled={isLoading}
+            className='email-search-button'
+          >
+            <EmailIcon className='button-icon' />
+            <span>Search by Email</span>
+          </button>
+          
+          <button
+            onClick={onRegisterWithoutImage}
+            disabled={isLoading}
+            className='register-no-image-button'
+          >
+            <PersonAddIcon className='button-icon' />
+            <span>Register Without Image</span>
           </button>
         </div>
 

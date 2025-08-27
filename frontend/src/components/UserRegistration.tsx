@@ -11,12 +11,12 @@ import {
   Home,
   Phone,
 } from '@mui/icons-material';
-import { registerUser } from '../services/api';
+import { registerUser, registerUserWithoutImage } from '../services/api';
 import { User, UserCreate } from '../types';
 import './UserRegistration.css';
 
 interface UserRegistrationProps {
-  capturedImage: string;
+  capturedImage?: string;
   onRegistrationComplete: (user: User) => void;
   onBack: () => void;
   isLoading: boolean;
@@ -49,11 +49,6 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!capturedImage) {
-      setError('No captured image available');
-      return;
-    }
-
     if (
       !formData.name ||
       !formData.email ||
@@ -68,12 +63,19 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({
     setError('');
 
     try {
-      // Convert base64 to file
-      const response = await fetch(capturedImage);
-      const blob = await response.blob();
-      const file = new File([blob], 'face.jpg', { type: 'image/jpeg' });
-
-      const user = await registerUser(file, formData);
+      let user: User;
+      
+      if (capturedImage) {
+        // Register with image
+        const response = await fetch(capturedImage);
+        const blob = await response.blob();
+        const file = new File([blob], 'face.jpg', { type: 'image/jpeg' });
+        user = await registerUser(file, formData);
+      } else {
+        // Register without image
+        user = await registerUserWithoutImage(formData);
+      }
+      
       onRegistrationComplete(user);
     } catch (err: any) {
       console.error('Registration error:', err);
@@ -185,7 +187,7 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({
                   ) : (
                     <>
                       <PersonAdd className='button-icon' />
-                      Register Customer
+                      {capturedImage ? 'Register Customer' : 'Register Without Image'}
                     </>
                   )}
                 </button>

@@ -143,34 +143,20 @@ const UserManagement: React.FC = () => {
         <table className='users-table'>
           <thead>
             <tr>
-              <th>ID</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Phone</th>
-              <th>Address</th>
               <th>Visits</th>
-              <th>Tier</th>
-              <th>Joined</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {users.map(user => (
               <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.phone_number || 'N/A'}</td>
-                <td>{user.address}</td>
+                <td className='user-name'>{user.name}</td>
+                <td className='user-email'>{user.email}</td>
                 <td>
                   <span className='visit-count'>{user.visit_count || 0}</span>
                 </td>
-                <td>
-                  <span className='tier-badge'>
-                    Tier {user.current_tier || 1}
-                  </span>
-                </td>
-                <td>{user.created_at ? formatDate(user.created_at) : 'N/A'}</td>
                 <td>
                   <div className='action-buttons'>
                     <button

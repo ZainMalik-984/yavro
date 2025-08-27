@@ -103,6 +103,23 @@ def create_user(db: Session, user: schemas.UserCreate, face_encoding: np.ndarray
     return db_user
 
 
+def create_user_without_face(db: Session, user: schemas.UserCreate):
+    """Create a new user without face encoding"""
+    db_user = models.User(
+        name=user.name,
+        email=user.email,
+        address=user.address,
+        phone_number=user.phone_number,
+        face_encoding=None,  # No face encoding for users without image
+        visit_count=0,
+        current_tier=1
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
 def create_visit(db: Session, user_id: int):
     """Create a new visit for a user and increment their visit count"""
     # Create the visit record

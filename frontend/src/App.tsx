@@ -4,12 +4,14 @@ import CameraCapture from './components/CameraCapture';
 import CheckoutModal from './components/CheckoutModal';
 import { User } from './types';
 import UserRegistration from './components/UserRegistration';
+import EmailSearch from './components/EmailSearch';
 import Dashboard from './components/Dashboard';
 import { ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [showRegistration, setShowRegistration] = useState(false);
+  const [showEmailSearch, setShowEmailSearch] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [showDashboard, setShowDashboard] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,9 +27,29 @@ function App() {
     setShowRegistration(true);
   };
 
+  const handleEmailSearch = () => {
+    setShowEmailSearch(true);
+  };
+
+  const handleRegisterWithoutImage = () => {
+    setShowRegistration(true);
+  };
+
+  const handleEmailSearchComplete = (user: User) => {
+    setCurrentUser(user);
+    setShowEmailSearch(false);
+    setShowCheckout(true);
+  };
+
+  const handleEmailSearchNotFound = () => {
+    setShowEmailSearch(false);
+    setShowRegistration(true);
+  };
+
   const handleRegistrationComplete = (user: User) => {
     setCurrentUser(user);
     setShowRegistration(false);
+    setShowEmailSearch(false);
     setShowCheckout(true);
     setCapturedImage(''); // Clear the captured image after registration
   };
@@ -42,6 +64,7 @@ function App() {
   const handleReset = () => {
     setCurrentUser(null);
     setShowRegistration(false);
+    setShowEmailSearch(false);
     setShowCheckout(false);
     setShowDashboard(false);
     setCapturedImage(''); // Clear the captured image
@@ -120,10 +143,22 @@ function App() {
           </div>
         ) : (
           <>
-            {!showRegistration && !showCheckout && (
+            {!showRegistration && !showEmailSearch && !showCheckout && (
               <CameraCapture
                 onUserRecognized={handleUserRecognized}
                 onUserNotFound={handleUserNotFound}
+                onEmailSearch={handleEmailSearch}
+                onRegisterWithoutImage={handleRegisterWithoutImage}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+              />
+            )}
+
+            {showEmailSearch && (
+              <EmailSearch
+                onUserFound={handleEmailSearchComplete}
+                onUserNotFound={handleEmailSearchNotFound}
+                onBack={handleReset}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
               />

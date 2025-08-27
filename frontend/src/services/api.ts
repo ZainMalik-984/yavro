@@ -36,6 +36,18 @@ export const recognizeUser = async (file: File): Promise<User> => {
   return response.data;
 };
 
+export const getUserByEmail = async (email: string): Promise<User> => {
+  const response = await api.get(`/user/email/${email}`);
+  return response.data;
+};
+
+export const registerUserWithoutImage = async (
+  userData: UserCreate
+): Promise<User> => {
+  const response = await api.post('/register/no-image/', userData);
+  return response.data;
+};
+
 export const registerUser = async (
   file: File,
   userData: UserCreate
