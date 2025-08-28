@@ -407,3 +407,83 @@ def spin_reward(db: Session, reward_id: int):
     # Use random.choices for weighted selection
     selected_option = random.choices(options, weights=weights, k=1)[0]
     return selected_option
+
+
+def get_user_rewards_by_user_id(db: Session, user_id: int, skip: int = 0, limit: int = 100):
+    """Get all rewards for a specific user with pagination"""
+    return db.query(models.UserReward).filter(
+        models.UserReward.user_id == user_id
+    ).offset(skip).limit(limit).all()
+
+
+# App Settings CRUD functions
+def get_app_settings(db: Session):
+    """Get the current app settings (there should only be one active record)"""
+    return db.query(models.AppSettings).filter(
+        models.AppSettings.is_active == True
+    ).first()
+
+
+def create_app_settings(db: Session, app_settings: schemas.AppSettingsCreate):
+    """Create new app settings"""
+    # Deactivate any existing settings
+    existing_settings = db.query(models.AppSettings).filter(
+        models.AppSettings.is_active == True
+    ).all()
+    for setting in existing_settings:
+        setting.is_active = False
+    
+    db_app_settings = models.AppSettings(**app_settings.dict())
+    db.add(db_app_settings)
+    db.commit()
+    db.refresh(db_app_settings)
+    return db_app_settings
+
+
+def update_app_settings(db: Session, app_settings_update: schemas.AppSettingsUpdate):
+    """Update the current app settings"""
+    current_settings = get_app_settings(db)
+    if not current_settings:
+        # Create default settings if none exist
+        default_settings = schemas.AppSettingsCreate(
+            cafe_name="Yavro Cafe",
+            cafe_tagline="Brewing Connections, One Cup at a Time"
+        )
+        return create_app_settings(db, default_settings)
+    
+    update_data = app_settings_update.dict(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(current_settings, field, value)
+    
+    db.commit()
+    db.refresh(current_settings)
+    return current_settings
+
+
+def update_cafe_logo(db: Session, logo_base64: str):
+    """Update the cafe logo base64"""
+    current_settings = get_app_settings(db)
+    if not current_settings:
+        # Create default settings if none exist
+        default_settings = schemas.AppSettingsCreate(
+            cafe_name="Yavro Cafe",
+            cafe_tagline="Brewing Connections, One Cup at a Time"
+        )
+        current_settings = create_app_settings(db, default_settings)
+    
+    current_settings.cafe_logo_base64 = logo_base64
+    db.commit()
+    db.refresh(current_settings)
+    return current_settings
+
+
+def delete_app_settings(db: Session, settings_id: int):
+    """Delete app settings by ID"""
+    settings = db.query(models.AppSettings).filter(
+        models.AppSettings.id == settings_id
+    ).first()
+    if settings:
+        db.delete(settings)
+        db.commit()
+        return True
+    return False

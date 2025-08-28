@@ -171,3 +171,30 @@ class SpinnerResponse(BaseModel):
     message: str
     selected_option: Optional[SpinnerOption] = None
     user_reward: Optional[UserReward] = None
+
+
+# App Settings schemas
+class AppSettingsBase(BaseModel):
+    cafe_name: str
+    cafe_tagline: str
+    is_active: bool = True
+
+
+class AppSettingsCreate(AppSettingsBase):
+    pass
+
+
+class AppSettingsUpdate(BaseModel):
+    cafe_name: Optional[str] = None
+    cafe_tagline: Optional[str] = None
+    is_active: Optional[bool] = None
+
+
+class AppSettings(AppSettingsBase):
+    id: int
+    cafe_logo_base64: Optional[str] = None
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True

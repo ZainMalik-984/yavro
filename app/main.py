@@ -32,6 +32,8 @@ app.add_middleware(
 )
 
 
+
+
 def get_face_encoding(file: UploadFile) -> np.ndarray:
     import logging
     try:
@@ -519,3 +521,70 @@ def use_user_reward(user_reward_id: int, db: Session = Depends(database.get_db))
     if not db_user_reward:
         raise HTTPException(status_code=404, detail="User reward not found")
     return schemas.UserReward.from_orm(db_user_reward)
+
+
+# App Settings endpoints
+@app.get("/app-settings/")
+def get_app_settings(db: Session = Depends(database.get_db)):
+    """Get current app settings"""
+    settings = crud.get_app_settings(db)
+    if not settings:
+        # Return default settings if none exist
+        return {
+            "cafe_name": "Yavro Cafe",
+            "cafe_tagline": "Brewing Connections, One Cup at a Time",
+            "cafe_logo_base64": None
+        }
+    return schemas.AppSettings.from_orm(settings)
+
+
+@app.post("/app-settings/")
+def create_app_settings(
+    app_settings: schemas.AppSettingsCreate,
+    db: Session = Depends(database.get_db)
+):
+    """Create new app settings"""
+    db_settings = crud.create_app_settings(db, app_settings)
+    return schemas.AppSettings.from_orm(db_settings)
+
+
+@app.put("/app-settings/")
+def update_app_settings(
+    app_settings: schemas.AppSettingsUpdate,
+    db: Session = Depends(database.get_db)
+):
+    """Update current app settings"""
+    db_settings = crud.update_app_settings(db, app_settings)
+    return schemas.AppSettings.from_orm(db_settings)
+
+
+@app.post("/app-settings/upload-logo")
+async def upload_cafe_logo(
+    file: UploadFile = File(...),
+    db: Session = Depends(database.get_db)
+):
+    """Upload cafe logo as base64"""
+    if not file.content_type.startswith('image/'):
+        raise HTTPException(status_code=400, detail="File must be an image")
+    
+    # Read file content and convert to base64
+    import base64
+    content = await file.read()
+    logo_base64 = base64.b64encode(content).decode('utf-8')
+    
+    # Add data URL prefix for frontend display
+    mime_type = file.content_type
+    data_url = f"data:{mime_type};base64,{logo_base64}"
+    
+    # Update database with logo base64
+    db_settings = crud.update_cafe_logo(db, data_url)
+    return schemas.AppSettings.from_orm(db_settings)
+
+
+@app.delete("/app-settings/{settings_id}")
+def delete_app_settings(settings_id: int, db: Session = Depends(database.get_db)):
+    """Delete app settings by ID"""
+    success = crud.delete_app_settings(db, settings_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="App settings not found")
+    return {"message": "App settings deleted successfully"}

@@ -202,3 +202,28 @@ export const spinReward = async (
   const response = await api.post('/spin-reward/', request);
   return response.data;
 };
+
+// App Settings API functions
+export const getAppSettings = async () => {
+  const response = await api.get('/app-settings/');
+  return response.data;
+};
+
+export const updateAppSettings = async (settings: any) => {
+  const response = await api.put('/app-settings/', settings);
+  return response.data;
+};
+
+export const uploadCafeLogo = async (file: File) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  const response = await api.post('/app-settings/upload-logo', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+};
+
+// Export the api instance for direct use
+export { api };

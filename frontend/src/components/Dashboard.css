@@ -1,6 +1,6 @@
 .dashboard {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto 150px;
   padding: 20px;
   background: linear-gradient(135deg, #f5f5dc 0%, #deb887 100%);
   border-radius: 15px;

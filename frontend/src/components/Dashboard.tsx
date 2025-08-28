@@ -5,8 +5,9 @@ import RewardManagement from './RewardManagement';
 import SpinnerManagement from './SpinnerManagement';
 import UserRewards from './UserRewards';
 import UserManagement from './UserManagement';
+import AppSettings from './AppSettings';
 
-type TabType = 'tiers' | 'rewards' | 'spinners' | 'user-rewards' | 'users';
+type TabType = 'tiers' | 'rewards' | 'spinners' | 'user-rewards' | 'users' | 'settings';
 
 const Dashboard: React.FC<{ BackButton: () => React.ReactNode }> = ({
   BackButton,
@@ -17,8 +18,9 @@ const Dashboard: React.FC<{ BackButton: () => React.ReactNode }> = ({
     { id: 'tiers', label: 'Tier Management' },
     { id: 'rewards', label: 'Reward Management' },
     { id: 'spinners', label: 'Spinner Management' },
-    { id: 'user-rewards', label: 'User Rewards' },
+    // { id: 'user-rewards', label: 'User Rewards' },
     { id: 'users', label: 'User Management' },
+    { id: 'settings', label: 'Cafe Settings' },
   ] as const;
 
   const renderTabContent = () => {
@@ -33,6 +35,8 @@ const Dashboard: React.FC<{ BackButton: () => React.ReactNode }> = ({
         return <UserRewards />;
       case 'users':
         return <UserManagement />;
+      case 'settings':
+        return <AppSettings />;
       default:
         return <TierManagement />;
     }

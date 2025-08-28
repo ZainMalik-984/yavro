@@ -6,11 +6,14 @@ import { User } from './types';
 import UserRegistration from './components/UserRegistration';
 import EmailSearch from './components/EmailSearch';
 import Dashboard from './components/Dashboard';
+import Footer from './components/Footer';
 import { ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import CloseIcon from '@mui/icons-material/Close';
+import { AppSettingsProvider, useAppSettings } from './contexts/AppSettingsContext';
 
-function App() {
+function AppContent() {
+  const { settings } = useAppSettings();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [showRegistration, setShowRegistration] = useState(false);
   const [showEmailSearch, setShowEmailSearch] = useState(false);
@@ -102,8 +105,12 @@ function App() {
       <header className='App-header'>
         <div className='yavro-header'>
           <div className='yavro-text'>
-            <img src='/yavro-icon.png' alt='Yavro' className='yavro-logo' />
-            <p>Brewing Connections, One Cup at a Time</p>
+            {settings.cafe_logo_base64 ? (
+              <img src={settings.cafe_logo_base64} alt={settings.cafe_name} className='yavro-logo' />
+            ) : (
+              <img src='/yavro-icon.png' alt='Yavro' className='yavro-logo' />
+            )}
+            <p>{settings.cafe_tagline}</p>
           </div>
           <button
             className='settings-button'
@@ -195,32 +202,43 @@ function App() {
 
         {/* Instructions Section - Hidden by default */}
       </main>
-        {/* Instructions Toggle Button */}
-        <div className='instructions-toggle'>
-          {showInstructions && (
-            <div className='instructions'>
-              <h3>How it works:</h3>
-              <ul>
-                <li>Position your face in the camera</li>
-                <li>Click "Capture & Recognize" to identify yourself</li>
-                <li>If you're a new customer, you'll be prompted to register</li>
-                <li>Existing customers will see their reward status</li>
-              </ul>
-            </div>
+      
+      {/* Instructions Toggle Button */}
+      <div className='instructions-toggle'>
+        {showInstructions && (
+          <div className='instructions'>
+            <h3>How it works:</h3>
+            <ul>
+              <li>Position your face in the camera</li>
+              <li>Click "Capture & Recognize" to identify yourself</li>
+              <li>If you're a new customer, you'll be prompted to register</li>
+              <li>Existing customers will see their reward status</li>
+            </ul>
+          </div>
+        )}
+        <button
+          onClick={toggleInstructions}
+          className='toggle-button'
+          title={showInstructions ? 'Hide Instructions' : 'Show Instructions'}
+        >
+          {showInstructions ? (
+            <CloseIcon className='button-icon' />
+          ) : (
+            <HelpOutlineIcon className='button-icon' />
           )}
-          <button
-            onClick={toggleInstructions}
-            className='toggle-button'
-            title={showInstructions ? 'Hide Instructions' : 'Show Instructions'}
-          >
-            {showInstructions ? (
-              <CloseIcon className='button-icon' />
-            ) : (
-              <HelpOutlineIcon className='button-icon' />
-            )}
-          </button>
-        </div>
+        </button>
+      </div>
+      
+      <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AppSettingsProvider>
+      <AppContent />
+    </AppSettingsProvider>
   );
 }
 

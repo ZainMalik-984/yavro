@@ -106,3 +106,14 @@ class UserReward(Base):
     reward = relationship("Reward", back_populates="user_rewards")
     visit = relationship("Visit")
     spinner_option = relationship("SpinnerOption")
+
+
+class AppSettings(Base):
+    __tablename__ = "app_settings"
+    id = Column(Integer, primary_key=True, index=True)
+    cafe_name = Column(String, default="Yavro Cafe")
+    cafe_logo_base64 = Column(Text, nullable=True)  # Base64 encoded logo
+    cafe_tagline = Column(String, default="Brewing Connections, One Cup at a Time")
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
