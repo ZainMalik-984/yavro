@@ -804,6 +804,143 @@
   }
 }
 
+/* Visit Information Section */
+.visit-info-section {
+  background: linear-gradient(135deg, #3d2314, #4a2c1a);
+  padding: 20px;
+  border-radius: 15px;
+  margin: 20px 0;
+  border: 2px solid #8b4513;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.visit-info-section h3 {
+  color: #deb887;
+  margin: 0 0 15px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.visit-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.visit-details p {
+  color: #cd853f;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.visit-details strong {
+  color: #deb887;
+  font-weight: 700;
+}
+
+/* Reward Details */
+.reward-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.reward-message {
+  color: #f5deb3 !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+.reward-tier {
+  color: #deb887 !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+}
+
+.discount-value {
+  color: #f5deb3 !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Spinner Result */
+.spinner-result {
+  background: linear-gradient(135deg, #4a2c1a, #3d2314);
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 15px;
+  border: 2px solid #cd853f;
+  box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
+  animation: coffeeReward 2s ease-in-out infinite;
+}
+
+.spinner-result h4 {
+  color: #f5deb3;
+  margin: 0 0 10px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.spinner-won-reward {
+  color: #deb887 !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  margin: 5px 0 !important;
+}
+
+.spinner-description {
+  color: #cd853f !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  margin: 5px 0 !important;
+}
+
+.spinner-value {
+  color: #f5deb3 !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  margin: 5px 0 !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Success Actions */
+.success-actions {
+  margin-top: 25px;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.close-success-button {
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #cd853f 100%);
+  color: #f5deb3;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: none;
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.5),
+    0 0 0 2px rgba(139, 69, 19, 0.3);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.5px;
+}
+
+.close-success-button:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.7),
+    0 0 0 3px rgba(139, 69, 19, 0.4);
+  background: linear-gradient(135deg, #a0522d 0%, #cd853f 50%, #deb887 100%);
+}
+
 @keyframes slideUp {
   from {
     opacity: 0;
@@ -970,6 +1107,31 @@
   }
 
   .reward-notification p {
+    font-size: 0.9rem;
+  }
+
+  .visit-info-section {
+    padding: 15px;
+  }
+
+  .visit-info-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .visit-details p {
+    font-size: 0.9rem;
+  }
+
+  .spinner-result {
+    padding: 12px;
+  }
+
+  .spinner-result h4 {
+    font-size: 1rem;
+  }
+
+  .close-success-button {
+    padding: 12px 25px;
     font-size: 0.9rem;
   }
 }

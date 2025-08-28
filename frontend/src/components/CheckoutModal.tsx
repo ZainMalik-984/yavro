@@ -38,6 +38,9 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [spinnerRewardId, setSpinnerRewardId] = useState<number | null>(null);
   const [visitId, setVisitId] = useState<number | null>(null);
   const [earnedReward, setEarnedReward] = useState<RewardEarned | null>(null);
+  const [spinnerResult, setSpinnerResult] = useState<SpinnerResponse | null>(
+    null
+  );
 
   const visitCount = user.visit_count || 0;
 
@@ -142,10 +145,6 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
           setShowSpinner(true);
         } else {
           setCheckoutSuccess(true);
-          // Auto-close after showing success message
-          setTimeout(() => {
-            onCheckoutComplete();
-          }, 3000);
         }
       } else {
         setError(response.message || 'Checkout failed');
@@ -161,23 +160,18 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const handleSpinnerComplete = (result: SpinnerResponse) => {
     // Handle spinner completion
     console.log('Spinner completed:', result);
+    setSpinnerResult(result);
     setShowSpinner(false);
     setCheckoutSuccess(true);
-
-    // Auto-close after showing success message
-    setTimeout(() => {
-      onCheckoutComplete();
-    }, 3000);
   };
 
   const handleSpinnerClose = () => {
     setShowSpinner(false);
     setCheckoutSuccess(true);
+  };
 
-    // Auto-close after showing success message
-    setTimeout(() => {
-      onCheckoutComplete();
-    }, 3000);
+  const handleCloseSuccess = () => {
+    onCheckoutComplete();
   };
 
   // Show spinner wheel if spinner reward was earned
@@ -203,26 +197,86 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
             </div>
             <h2>Checkout Complete!</h2>
             <p>Visit recorded successfully for {user.name}</p>
+
+            {/* Visit Information */}
+            <div className='visit-info-section'>
+              <h3>Visit Information</h3>
+              <div className='visit-details'>
+                <p>
+                  <strong>Total Visits:</strong> {visitCount + 1}
+                </p>
+                <p>
+                  <strong>Current Tier:</strong>{' '}
+                  {currentTier?.name || 'Unknown'}
+                </p>
+                {nextTier && (
+                  <p>
+                    <strong>Next Tier:</strong> {nextTier.name} (in{' '}
+                    {visitsToNextReward - 1} visits)
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Reward Information */}
             {earnedReward && (
               <div className='reward-notification'>
                 <h3>
                   {earnedReward.type === 'free_coffee' && <CardGiftcardIcon />}
                   {earnedReward.type === 'discount' && <CreditCardIcon />}
                   {earnedReward.type === 'spinner' && <CasinoIcon />}
-                  Congratulations!
+                  🎉 Reward Earned! 🎉
                 </h3>
-                <p>{earnedReward.message}</p>
-                <p>This is your {visitCount + 1}th visit!</p>
-                {earnedReward.type === 'spinner' && (
-                  <p className='spinner-note'>
-                    🎰 Spin the wheel to claim your reward!
+                <div className='reward-details'>
+                  <p className='reward-message'>{earnedReward.message}</p>
+                  <p className='reward-tier'>
+                    From Tier: {earnedReward.tier_name}
                   </p>
-                )}
+                  {earnedReward.type === 'discount' &&
+                    earnedReward.discount_percentage && (
+                      <p className='discount-value'>
+                        Discount: {earnedReward.discount_percentage}%
+                      </p>
+                    )}
+
+                  {/* Show spinner result if available */}
+                  {earnedReward.type === 'spinner' &&
+                    spinnerResult &&
+                    spinnerResult.selected_option && (
+                      <div className='spinner-result'>
+                        <h4> Spinner Result:</h4>
+                        <p className='spinner-won-reward'>
+                          You won: {spinnerResult.selected_option.name}
+                        </p>
+                        {spinnerResult.selected_option.description && (
+                          <p className='spinner-description'>
+                            {spinnerResult.selected_option.description}
+                          </p>
+                        )}
+                        {spinnerResult.selected_option.value && (
+                          <p className='spinner-value'>
+                            Value:{' '}
+                            {spinnerResult.selected_option.reward_type ===
+                            'discount'
+                              ? `${spinnerResult.selected_option.value}% off`
+                              : spinnerResult.selected_option.value}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                </div>
               </div>
             )}
-            <p className='closing-message'>
-              Redirecting back to recognition...
-            </p>
+
+            {/* Close Button */}
+            <div className='success-actions'>
+              <button
+                onClick={handleCloseSuccess}
+                className='close-success-button'
+              >
+                Close & Return to Recognition
+              </button>
+            </div>
           </div>
         </div>
       </div>

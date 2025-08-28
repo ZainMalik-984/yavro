@@ -2,8 +2,6 @@ import React, { useRef, useCallback, useState } from 'react';
 import Webcam from 'react-webcam';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import CircularProgress from '@mui/material/CircularProgress';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import CloseIcon from '@mui/icons-material/Close';
 import EmailIcon from '@mui/icons-material/Email';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { recognizeUser } from '../services/api';
@@ -29,7 +27,6 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
 }) => {
   const webcamRef = useRef<Webcam>(null);
   const [error, setError] = useState<string>('');
-  const [showInstructions, setShowInstructions] = useState(false);
 
   const capture = useCallback(async () => {
     if (!webcamRef.current) return;
@@ -68,10 +65,6 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
       setIsLoading(false);
     }
   }, [onUserRecognized, onUserNotFound, setIsLoading]);
-
-  const toggleInstructions = () => {
-    setShowInstructions(!showInstructions);
-  };
 
   return (
     <div className='camera-capture'>
@@ -124,35 +117,6 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
 
         {error && <div className='error-message'>{error}</div>}
 
-        {/* Instructions Toggle Button */}
-        <div className='instructions-toggle'>
-          <button onClick={toggleInstructions} className='toggle-button'>
-            {showInstructions ? (
-              <>
-                <CloseIcon className='button-icon' />
-                <span>Hide Instructions</span>
-              </>
-            ) : (
-              <>
-                <HelpOutlineIcon className='button-icon' />
-                <span>Show Instructions</span>
-              </>
-            )}
-          </button>
-        </div>
-
-        {/* Instructions Section - Hidden by default */}
-        {showInstructions && (
-          <div className='instructions'>
-            <h3>How it works:</h3>
-            <ul>
-              <li>Position your face in the camera</li>
-              <li>Click "Capture & Recognize" to identify yourself</li>
-              <li>If you're a new customer, you'll be prompted to register</li>
-              <li>Existing customers will see their reward status</li>
-            </ul>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -159,7 +159,7 @@
     0 0 0 2px rgba(139, 69, 19, 0.3);
   border: 3px solid #8b4513;
   transition: all 0.3s ease;
-  max-height: 200px;
+  max-height: 400px;
   width: 100%;
   object-fit: cover;
 }
@@ -460,10 +460,6 @@
     margin-top: 20px;
   }
 
-  .webcam {
-    max-height: 180px;
-    border-radius: 12px;
-  }
 
   .capture-button {
     padding: 10px 15px;

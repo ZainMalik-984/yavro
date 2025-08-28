@@ -7,6 +7,8 @@ import UserRegistration from './components/UserRegistration';
 import EmailSearch from './components/EmailSearch';
 import Dashboard from './components/Dashboard';
 import { ArrowBack as ArrowBackIcon } from '@mui/icons-material';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import CloseIcon from '@mui/icons-material/Close';
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -16,6 +18,7 @@ function App() {
   const [showDashboard, setShowDashboard] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string>('');
+  const [showInstructions, setShowInstructions] = useState(false);
 
   const handleUserRecognized = (user: User) => {
     setCurrentUser(user);
@@ -68,6 +71,10 @@ function App() {
     setShowCheckout(false);
     setShowDashboard(false);
     setCapturedImage(''); // Clear the captured image
+  };
+
+  const toggleInstructions = () => {
+    setShowInstructions(!showInstructions);
   };
 
   return (
@@ -185,7 +192,34 @@ function App() {
             )}
           </>
         )}
+
+        {/* Instructions Section - Hidden by default */}
       </main>
+        {/* Instructions Toggle Button */}
+        <div className='instructions-toggle'>
+          {showInstructions && (
+            <div className='instructions'>
+              <h3>How it works:</h3>
+              <ul>
+                <li>Position your face in the camera</li>
+                <li>Click "Capture & Recognize" to identify yourself</li>
+                <li>If you're a new customer, you'll be prompted to register</li>
+                <li>Existing customers will see their reward status</li>
+              </ul>
+            </div>
+          )}
+          <button
+            onClick={toggleInstructions}
+            className='toggle-button'
+            title={showInstructions ? 'Hide Instructions' : 'Show Instructions'}
+          >
+            {showInstructions ? (
+              <CloseIcon className='button-icon' />
+            ) : (
+              <HelpOutlineIcon className='button-icon' />
+            )}
+          </button>
+        </div>
     </div>
   );
 }
