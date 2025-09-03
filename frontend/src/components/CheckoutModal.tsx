@@ -373,11 +373,10 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
           <div className='customer-avatar'>
             <PersonIcon />
           </div>
-          <div className='customer-details'>
-            <h3>{user.name}</h3>
-            <p>{user.email}</p>
-            <p>{user.address}</p>
-          </div>
+                      <div className='customer-details'>
+              <h3>{user.name}</h3>
+              <p>{user.phone_number}</p>
+            </div>
         </div>
 
         <div className='reward-status'>

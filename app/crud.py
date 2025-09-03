@@ -11,8 +11,10 @@ def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 
-def get_user_by_email(db: Session, email: str):
-    return db.query(models.User).filter(models.User.email == email).first()
+def get_user_by_phone(db: Session, phone_number: str):
+    return db.query(models.User).filter(
+        models.User.phone_number == phone_number
+    ).first()
 
 
 def get_all_users(db: Session, skip: int = 0, limit: int = 100):
@@ -90,8 +92,6 @@ def get_user_by_face_encoding(db: Session, encoding: np.ndarray, tolerance: floa
 def create_user(db: Session, user: schemas.UserCreate, face_encoding: np.ndarray):
     db_user = models.User(
         name=user.name,
-        email=user.email,
-        address=user.address,
         phone_number=user.phone_number,
         face_encoding=face_encoding.tobytes(),
         visit_count=0,
@@ -107,8 +107,6 @@ def create_user_without_face(db: Session, user: schemas.UserCreate):
     """Create a new user without face encoding"""
     db_user = models.User(
         name=user.name,
-        email=user.email,
-        address=user.address,
         phone_number=user.phone_number,
         face_encoding=None,  # No face encoding for users without image
         visit_count=0,
@@ -484,6 +482,81 @@ def delete_app_settings(db: Session, settings_id: int):
     ).first()
     if settings:
         db.delete(settings)
+        db.commit()
+        return True
+    return False
+
+
+# Admin User CRUD operations
+def get_admin_user(db: Session, user_id: int):
+    """Get admin user by ID"""
+    return db.query(models.AdminUser).filter(
+        models.AdminUser.id == user_id
+    ).first()
+
+
+def get_admin_user_by_username(db: Session, username: str):
+    """Get admin user by username"""
+    return db.query(models.AdminUser).filter(
+        models.AdminUser.username == username
+    ).first()
+
+
+def get_admin_user_by_email(db: Session, email: str):
+    """Get admin user by email"""
+    return db.query(models.AdminUser).filter(
+        models.AdminUser.email == email
+    ).first()
+
+
+def get_all_admin_users(db: Session, skip: int = 0, limit: int = 100):
+    """Get all admin users with pagination"""
+    return db.query(models.AdminUser).offset(skip).limit(limit).all()
+
+
+def create_admin_user(db: Session, admin_user: schemas.AdminUserCreate):
+    """Create a new admin user"""
+    from app.auth import get_password_hash
+    
+    # Check if username already exists
+    if get_admin_user_by_username(db, admin_user.username):
+        return None
+    
+    # Check if email already exists
+    if get_admin_user_by_email(db, admin_user.email):
+        return None
+    
+    hashed_password = get_password_hash(admin_user.password)
+    db_admin_user = models.AdminUser(
+        username=admin_user.username,
+        email=admin_user.email,
+        hashed_password=hashed_password,
+        role=admin_user.role,
+        is_active=True
+    )
+    db.add(db_admin_user)
+    db.commit()
+    db.refresh(db_admin_user)
+    return db_admin_user
+
+
+def update_admin_user(db: Session, user_id: int, admin_user_data: dict):
+    """Update admin user information"""
+    admin_user = get_admin_user(db, user_id)
+    if admin_user:
+        for key, value in admin_user_data.items():
+            if hasattr(admin_user, key):
+                setattr(admin_user, key, value)
+        db.commit()
+        db.refresh(admin_user)
+    return admin_user
+
+
+def delete_admin_user(db: Session, user_id: int):
+    """Delete an admin user"""
+    admin_user = get_admin_user(db, user_id)
+    if admin_user:
+        db.delete(admin_user)
         db.commit()
         return True
     return False

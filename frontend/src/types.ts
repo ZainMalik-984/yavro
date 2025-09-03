@@ -1,8 +1,6 @@
 export interface User {
   id: number;
   name: string;
-  email: string;
-  address: string;
   phone_number: string;
   visit_count: number;
   current_tier: number;
@@ -11,8 +9,6 @@ export interface User {
 
 export interface UserCreate {
   name: string;
-  email: string;
-  address: string;
   phone_number: string;
 }
 
@@ -123,4 +119,38 @@ export interface SpinnerResponse {
   message: string;
   selected_option?: SpinnerOption;
   user_reward?: UserReward;
+}
+
+// Authentication types
+export interface AdminUser {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface AdminUserCreate {
+  username: string;
+  email: string;
+  password: string;
+  role: string;
+}
+
+export interface SuperAdminCreate {
+  username: string;
+  email: string;
+  password: string;
+}
+
+export interface AdminUserLogin {
+  username: string;
+  password: string;
+}
+
+export interface Token {
+  access_token: string;
+  token_type: string;
+  user: AdminUser;
 }

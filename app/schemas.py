@@ -5,8 +5,6 @@ from typing import Optional, List
 
 class UserBase(BaseModel):
     name: str
-    email: str
-    address: str
     phone_number: str
 
 
@@ -16,8 +14,6 @@ class UserCreate(UserBase):
 
 class UserUpdate(BaseModel):
     name: Optional[str] = None
-    email: Optional[str] = None
-    address: Optional[str] = None
     phone_number: Optional[str] = None
 
     class Config:
@@ -32,8 +28,47 @@ class User(UserBase):
 
     class Config:
         from_attributes = True
-        # Exclude the face_encoding field from serialization since it contains binary data
+        # Exclude the face_encoding field from serialization since it contains
+        # binary data
         exclude = {"face_encoding"}
+
+
+# Authentication schemas
+class AdminUserBase(BaseModel):
+    username: str
+    email: str
+    role: str = "admin"  # "admin", "pos", or "super-admin"
+
+
+class AdminUserCreate(AdminUserBase):
+    password: str
+
+
+class SuperAdminCreate(BaseModel):
+    username: str
+    email: str
+    password: str
+
+
+class AdminUserLogin(BaseModel):
+    username: str
+    password: str
+
+
+class AdminUser(AdminUserBase):
+    id: int
+    is_active: bool
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+        exclude = {"hashed_password"}
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    user: AdminUser
 
 
 class VisitBase(BaseModel):

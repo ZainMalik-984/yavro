@@ -1,20 +1,13 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, Float, Text, LargeBinary
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-try:
-    # Try importing as if running from root directory
-    from app.database import Base
-except ImportError:
-    # Try importing as if running from within app directory
-    from database import Base
+from app.database import Base
 
 
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
-    email = Column(String, unique=True, index=True)
-    address = Column(String)
     phone_number = Column(String)  # Phone number for SMS notifications
     face_encoding = Column(LargeBinary)  # Binary data type for face encodings
     visit_count = Column(Integer, default=0)  # Track total visits for rewards
@@ -25,6 +18,17 @@ class User(Base):
     visits = relationship("Visit", back_populates="user")
     # Relationship to user rewards
     user_rewards = relationship("UserReward", back_populates="user")
+
+
+class AdminUser(Base):
+    __tablename__ = "admin_users"
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    email = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
+    role = Column(String, default="admin")  # "admin" or "pos"
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
 class Visit(Base):

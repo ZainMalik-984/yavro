@@ -7,6 +7,8 @@ from app import models
 from app import schemas
 from app import crud
 from app import database
+from app import auth
+from datetime import timedelta
 import face_recognition
 import numpy as np
 import logging
@@ -100,20 +102,18 @@ def recognize_user(file: UploadFile = File(...), db: Session = Depends(database.
 def register_user(
     file: UploadFile = File(...),
     name: str = Form(...),
-    email: str = Form(...),
-    address: str = Form(...),
     phone_number: str = Form(...),
     db: Session = Depends(database.get_db)
 ):
     import logging
     try:
         encoding = get_face_encoding(file)
-        db_user = crud.get_user_by_email(db, email=email)
+        db_user = crud.get_user_by_phone(db, phone_number=phone_number)
         if db_user:
             raise HTTPException(
-                status_code=400, detail="Email already registered")
+                status_code=400, detail="Phone number already registered")
         user_data = schemas.UserCreate(
-            name=name, email=email, address=address, phone_number=phone_number)
+            name=name, phone_number=phone_number)
         user = crud.create_user(db=db, user=user_data, face_encoding=encoding)
         return schemas.User.from_orm(user)
     except Exception as e:
@@ -305,10 +305,10 @@ def get_user(user_id: int, db: Session = Depends(database.get_db)):
     return schemas.User.from_orm(user)
 
 
-@app.get("/user/email/{email}")
-def get_user_by_email(email: str, db: Session = Depends(database.get_db)):
-    """Get user by email address"""
-    user = crud.get_user_by_email(db, email=email)
+@app.get("/user/phone/{phone}")
+def get_user_by_phone(phone: str, db: Session = Depends(database.get_db)):
+    """Get user by phone number"""
+    user = crud.get_user_by_phone(db, phone_number=phone)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return schemas.User.from_orm(user)
@@ -321,11 +321,11 @@ def register_user_without_image(
 ):
     """Register a new user without face image"""
     try:
-        # Check if email already exists
-        db_user = crud.get_user_by_email(db, email=user_data.email)
+        # Check if phone number already exists
+        db_user = crud.get_user_by_phone(db, phone_number=user_data.phone_number)
         if db_user:
             raise HTTPException(
-                status_code=400, detail="Email already registered")
+                status_code=400, detail="Phone number already registered")
         
         # Create user without face encoding
         user = crud.create_user_without_face(db=db, user=user_data)
@@ -588,3 +588,197 @@ def delete_app_settings(settings_id: int, db: Session = Depends(database.get_db)
     if not success:
         raise HTTPException(status_code=404, detail="App settings not found")
     return {"message": "App settings deleted successfully"}
+
+
+# Authentication endpoints
+@app.post("/auth/login")
+def login(
+    user_credentials: schemas.AdminUserLogin,
+    db: Session = Depends(database.get_db)
+):
+    """Login endpoint for admin users"""
+    user = auth.authenticate_user(
+        db, user_credentials.username, user_credentials.password
+    )
+    if not user:
+        raise HTTPException(
+            status_code=401,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    access_token_expires = timedelta(minutes=auth.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = auth.create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    
+    return schemas.Token(
+        access_token=access_token,
+        token_type="bearer",
+        user=schemas.AdminUser.from_orm(user)
+    )
+
+
+@app.post("/auth/register")
+def register_admin_user(
+    admin_user: schemas.AdminUserCreate,
+    db: Session = Depends(database.get_db)
+):
+    """Register a new admin user"""
+    db_user = crud.create_admin_user(db, admin_user)
+    if not db_user:
+        raise HTTPException(
+            status_code=400, detail="Username or email already registered"
+        )
+    return schemas.AdminUser.from_orm(db_user)
+
+
+@app.post("/auth/register/super-admin")
+def register_super_admin(
+    super_admin: schemas.SuperAdminCreate,
+    db: Session = Depends(database.get_db)
+):
+    """Register a new super admin user - only allowed with specific email"""
+    import os
+    
+    # Check if the email matches the configured super admin email
+    super_admin_email = os.getenv("SUPER_ADMIN_EMAIL")
+    if not super_admin_email or super_admin.email != super_admin_email:
+        raise HTTPException(
+            status_code=403, 
+            detail="Super admin registration not allowed for this email"
+        )
+    
+    # Create admin user with super-admin role
+    admin_user_data = schemas.AdminUserCreate(
+        username=super_admin.username,
+        email=super_admin.email,
+        password=super_admin.password,
+        role="super-admin"
+    )
+    
+    db_user = crud.create_admin_user(db, admin_user_data)
+    if not db_user:
+        raise HTTPException(
+            status_code=400, detail="Username or email already registered"
+        )
+    return schemas.AdminUser.from_orm(db_user)
+
+
+@app.get("/auth/me")
+def get_current_user_info(
+    current_user: models.AdminUser = Depends(auth.get_current_active_user)
+):
+    """Get current user information"""
+    return schemas.AdminUser.from_orm(current_user)
+
+
+# Protected endpoints that require authentication
+@app.get("/admin/users/")
+def get_users_admin(
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(database.get_db),
+    current_user: models.AdminUser = Depends(auth.require_pos_or_admin_role)
+):
+    """Get all users with pagination (requires POS or admin role)"""
+    users = crud.get_all_users(db, skip=skip, limit=limit)
+    return [schemas.User.from_orm(user) for user in users]
+
+
+@app.put("/admin/user/{user_id}")
+def update_user_admin(
+    user_id: int,
+    user_update: schemas.UserUpdate,
+    db: Session = Depends(database.get_db),
+    current_user: models.AdminUser = Depends(auth.require_pos_or_admin_role)
+):
+    """Update user information (requires POS or admin role)"""
+    user = crud.update_user(db, user_id, user_update.dict(exclude_unset=True))
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return schemas.User.from_orm(user)
+
+
+@app.delete("/admin/user/{user_id}")
+def delete_user_admin(
+    user_id: int,
+    db: Session = Depends(database.get_db),
+    current_user: models.AdminUser = Depends(auth.require_admin_role)
+):
+    """Delete a user (requires admin role)"""
+    success = crud.delete_user(db, user_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"message": "User deleted successfully"}
+
+
+@app.get("/admin/admin-users/")
+def get_admin_users(
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(database.get_db),
+    current_user: models.AdminUser = Depends(auth.require_admin_role)
+):
+    """Get all admin users (requires admin role)"""
+    admin_users = crud.get_all_admin_users(db, skip=skip, limit=limit)
+    return [schemas.AdminUser.from_orm(user) for user in admin_users]
+
+
+@app.post("/admin/admin-users/")
+def create_admin_user_endpoint(
+    admin_user: schemas.AdminUserCreate,
+    db: Session = Depends(database.get_db),
+    current_user: models.AdminUser = Depends(auth.require_admin_role)
+):
+    """Create a new admin user (requires admin role)"""
+    db_user = crud.create_admin_user(db, admin_user)
+    if not db_user:
+        raise HTTPException(
+            status_code=400, detail="Username or email already registered"
+        )
+    return schemas.AdminUser.from_orm(db_user)
+
+
+@app.post("/super-admin/admin-users/")
+def create_admin_user_super_admin(
+    admin_user: schemas.AdminUserCreate,
+    db: Session = Depends(database.get_db),
+    current_user: models.AdminUser = Depends(auth.require_super_admin_role)
+):
+    """Create a new admin user (requires super-admin role)"""
+    db_user = crud.create_admin_user(db, admin_user)
+    if not db_user:
+        raise HTTPException(
+            status_code=400, detail="Username or email already registered"
+        )
+    return schemas.AdminUser.from_orm(db_user)
+
+
+@app.put("/admin/admin-users/{user_id}")
+def update_admin_user_endpoint(
+    user_id: int,
+    admin_user_update: schemas.AdminUserCreate,
+    db: Session = Depends(database.get_db),
+    current_user: models.AdminUser = Depends(auth.require_admin_role)
+):
+    """Update admin user (requires admin role)"""
+    user = crud.update_admin_user(
+        db, user_id, admin_user_update.dict(exclude_unset=True)
+    )
+    if not user:
+        raise HTTPException(status_code=404, detail="Admin user not found")
+    return schemas.AdminUser.from_orm(user)
+
+
+@app.delete("/admin/admin-users/{user_id}")
+def delete_admin_user_endpoint(
+    user_id: int,
+    db: Session = Depends(database.get_db),
+    current_user: models.AdminUser = Depends(auth.require_admin_role)
+):
+    """Delete admin user (requires admin role)"""
+    success = crud.delete_admin_user(db, user_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Admin user not found")
+    return {"message": "Admin user deleted successfully"}

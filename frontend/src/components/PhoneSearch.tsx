@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import {
-  Email,
+  Phone,
   Search,
   PersonAdd,
   ArrowBack,
-  CheckCircle,
 } from '@mui/icons-material';
-import { getUserByEmail } from '../services/api';
+import { getUserByPhone } from '../services/api';
 import { User } from '../types';
-import './EmailSearch.css';
+import './PhoneSearch.css';
 
-interface EmailSearchProps {
+interface PhoneSearchProps {
   onUserFound: (user: User) => void;
   onUserNotFound: () => void;
   onBack: () => void;
@@ -18,21 +17,21 @@ interface EmailSearchProps {
   setIsLoading: (loading: boolean) => void;
 }
 
-const EmailSearch: React.FC<EmailSearchProps> = ({
+const PhoneSearch: React.FC<PhoneSearchProps> = ({
   onUserFound,
   onUserNotFound,
   onBack,
   isLoading,
   setIsLoading,
 }) => {
-  const [email, setEmail] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
   const [error, setError] = useState<string>('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email.trim()) {
-      setError('Please enter an email address');
+    if (!phone.trim()) {
+      setError('Please enter a phone number');
       return;
     }
 
@@ -40,10 +39,10 @@ const EmailSearch: React.FC<EmailSearchProps> = ({
     setError('');
 
     try {
-      const user = await getUserByEmail(email.trim());
+      const user = await getUserByPhone(phone.trim());
       onUserFound(user);
     } catch (err: any) {
-      console.error('Email search error:', err);
+      console.error('Phone search error:', err);
       if (err.response?.status === 404) {
         // User not found - this is expected for new customers
         onUserNotFound();
@@ -58,28 +57,28 @@ const EmailSearch: React.FC<EmailSearchProps> = ({
   };
 
   return (
-    <div className='email-search'>
+    <div className='phone-search'>
       <div className='search-container'>
         <h2>
-          <Email className='header-icon' />
-          Search by Email
+          <Phone className='header-icon' />
+          Search by Phone
         </h2>
 
         <div className='search-content'>
           <form onSubmit={handleSubmit}>
             <div className='form-group'>
-              <label htmlFor='email'>
-                <Email className='label-icon' />
-                Email Address *
+              <label htmlFor='phone'>
+                <Phone className='label-icon' />
+                Phone Number *
               </label>
               <input
-                type='email'
-                id='email'
-                name='email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type='tel'
+                id='phone'
+                name='phone'
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 required
-                placeholder="Enter customer's email address"
+                placeholder="Enter customer's phone number"
                 disabled={isLoading}
               />
             </div>
@@ -121,4 +120,4 @@ const EmailSearch: React.FC<EmailSearchProps> = ({
   );
 };
 
-export default EmailSearch;
+export default PhoneSearch;

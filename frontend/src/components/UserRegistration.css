@@ -274,7 +274,8 @@
 .form-group label {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  text-align: left;
+  margin-bottom: 0px !important;
   color: #deb887;
   font-weight: 700;
   font-size: 0.9rem;
@@ -319,6 +320,132 @@
   box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
   animation: shakeError 0.5s ease-in-out;
   font-size: 0.9rem;
+}
+
+/* Privacy Consent Group */
+.privacy-consent-group {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.privacy-checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+
+.privacy-label {
+  color: #f5deb3;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  cursor: pointer;
+  user-select: none;
+  margin: 0;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: calc(100% - 32px);
+  word-wrap: break-word;
+}
+
+.privacy-policy-link {
+  background: none;
+  border: none;
+  color: #deb887;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+  font-weight: 600;
+  padding: 0;
+  margin: 0 3px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.privacy-policy-link:hover {
+  color: #f5deb3;
+  text-shadow: 0 0 8px rgba(222, 184, 135, 0.6);
+}
+
+/* Privacy Policy Modal */
+.privacy-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.privacy-modal {
+  background: linear-gradient(145deg, #2c1810, #3d2314, #4a2c1a);
+  border-radius: 20px;
+  padding: 25px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.8),
+    0 0 0 2px rgba(139, 69, 19, 0.3);
+  animation: slideInUp 0.3s ease-out;
+}
+
+.privacy-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(139, 69, 19, 0.3);
+}
+
+.privacy-modal-header h3 {
+  color: #deb887;
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.privacy-modal-close {
+  background: none;
+  border: none;
+  color: #deb887;
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.privacy-modal-close:hover {
+  background: rgba(139, 69, 19, 0.3);
+  color: #f5deb3;
+  transform: scale(1.1);
+}
+
+.privacy-modal-content {
+  color: #f5deb3;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.privacy-modal-content p {
+  margin: 0;
+  text-align: justify;
 }
 
 .form-actions {
@@ -431,6 +558,26 @@
   }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Responsive design for 768x1366 */
 @media (max-width: 768px) {
   .user-registration {
@@ -473,7 +620,6 @@
 
   .form-group label {
     font-size: 0.85rem;
-    margin-bottom: 6px;
   }
 
   .form-group input {
@@ -497,5 +643,33 @@
   .error-message {
     padding: 12px;
     font-size: 0.85rem;
+  }
+
+  .privacy-consent-group {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  .privacy-checkbox-container {
+    gap: 6px;
+  }
+
+  .privacy-label {
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .privacy-modal {
+    padding: 20px;
+    max-width: 90%;
+    width: 95%;
+  }
+
+  .privacy-modal-header h3 {
+    font-size: 1.2rem;
+  }
+
+  .privacy-modal-content {
+    font-size: 0.9rem;
   }
 }

@@ -240,12 +240,12 @@
     gap: 10px;
   }
 
-  .email-search-button,
-  .register-no-image-button {
-    padding: 10px 16px;
+  .phone-search-button,
+.register-no-image-button {
+    padding: 15px 16px;
     font-size: 0.8rem;
     border-radius: 20px;
-    min-height: 40px;
+    height: 50px;
   }
 }
 
@@ -261,12 +261,12 @@
   z-index: 1;
 }
 
-.email-search-button,
+.phone-search-button,
 .register-no-image-button {
   background: linear-gradient(135deg, #2c1810 0%, #3d2314 100%);
   color: #cd853f;
   border: none;
-  padding: 12px 20px;
+  padding: 15px 20px;
   border-radius: 25px;
   font-size: 0.9rem;
   font-weight: 600;
@@ -281,10 +281,34 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 45px;
+  height: 50px;
 }
 
-.email-search-button::before,
+/* Override global back-button styles for CameraCapture */
+.alternative-actions .back-button {
+  background: #f8f9fa;
+  color: #666;
+  border: 2px solid #e0e0e0;
+  padding: 15px 20px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 50px;
+  margin-bottom: 0;
+}
+
+.phone-search-button::before,
 .register-no-image-button::before {
   content: '';
   position: absolute;
@@ -301,7 +325,7 @@
   transition: left 0.5s ease;
 }
 
-.email-search-button:hover,
+.phone-search-button:hover,
 .register-no-image-button:hover {
   transform: translateY(-2px);
   box-shadow:
@@ -311,17 +335,17 @@
   color: #deb887;
 }
 
-.email-search-button:hover::before,
+.phone-search-button:hover::before,
 .register-no-image-button:hover::before {
   left: 100%;
 }
 
-.email-search-button:active,
+.phone-search-button:active,
 .register-no-image-button:active {
   transform: translateY(0);
 }
 
-.email-search-button:disabled,
+.phone-search-button:disabled,
 .register-no-image-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -329,7 +353,22 @@
   box-shadow: none;
 }
 
-.email-search-button .button-icon,
+/* Back button hover and disabled states */
+.alternative-actions .back-button:hover {
+  background: #e9ecef;
+  border-color: #d1d5db;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.alternative-actions .back-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.phone-search-button .button-icon,
 .register-no-image-button .button-icon {
   font-size: 1rem;
   animation: none;

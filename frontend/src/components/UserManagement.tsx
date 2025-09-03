@@ -20,8 +20,6 @@ const UserManagement: React.FC = () => {
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const [editForm, setEditForm] = useState({
     name: '',
-    email: '',
-    address: '',
     phone_number: '',
   });
 
@@ -47,8 +45,6 @@ const UserManagement: React.FC = () => {
     setEditingUser(user);
     setEditForm({
       name: user.name,
-      email: user.email,
-      address: user.address,
       phone_number: user.phone_number,
     });
     setShowEditModal(true);
@@ -144,7 +140,7 @@ const UserManagement: React.FC = () => {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Email</th>
+              <th>Phone</th>
               <th>Visits</th>
               <th>Actions</th>
             </tr>
@@ -153,7 +149,7 @@ const UserManagement: React.FC = () => {
             {users.map(user => (
               <tr key={user.id}>
                 <td className='user-name'>{user.name}</td>
-                <td className='user-email'>{user.email}</td>
+                <td className='user-phone'>{user.phone_number}</td>
                 <td>
                   <span className='visit-count'>{user.visit_count || 0}</span>
                 </td>
@@ -212,28 +208,7 @@ const UserManagement: React.FC = () => {
                   }
                 />
               </div>
-              <div className='form-group'>
-                <label htmlFor='edit-email'>Email</label>
-                <input
-                  type='email'
-                  id='edit-email'
-                  value={editForm.email}
-                  onChange={e =>
-                    setEditForm({ ...editForm, email: e.target.value })
-                  }
-                />
-              </div>
-              <div className='form-group'>
-                <label htmlFor='edit-address'>Address</label>
-                <input
-                  type='text'
-                  id='edit-address'
-                  value={editForm.address}
-                  onChange={e =>
-                    setEditForm({ ...editForm, address: e.target.value })
-                  }
-                />
-              </div>
+
               <div className='form-group'>
                 <label htmlFor='edit-phone'>Phone Number</label>
                 <input

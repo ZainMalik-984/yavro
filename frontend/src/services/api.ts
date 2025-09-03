@@ -12,6 +12,10 @@ import {
   UserReward,
   SpinnerRequest,
   SpinnerResponse,
+  AdminUser,
+  AdminUserCreate,
+  AdminUserLogin,
+  Token,
 } from '../types';
 
 const API_BASE_URL = 'http://localhost:8000';
@@ -22,6 +26,35 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+// Add request interceptor to include auth token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor to handle auth errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Clear stored auth data on 401
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      // Redirect to login or show login modal
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const recognizeUser = async (file: File): Promise<User> => {
   const formData = new FormData();
@@ -36,8 +69,8 @@ export const recognizeUser = async (file: File): Promise<User> => {
   return response.data;
 };
 
-export const getUserByEmail = async (email: string): Promise<User> => {
-  const response = await api.get(`/user/email/${email}`);
+export const getUserByPhone = async (phone: string): Promise<User> => {
+  const response = await api.get(`/user/phone/${phone}`);
   return response.data;
 };
 
@@ -55,8 +88,6 @@ export const registerUser = async (
   const formData = new FormData();
   formData.append('file', file);
   formData.append('name', userData.name);
-  formData.append('email', userData.email);
-  formData.append('address', userData.address);
   formData.append('phone_number', userData.phone_number);
 
   const response = await api.post('/register/', formData, {
@@ -223,6 +254,42 @@ export const uploadCafeLogo = async (file: File) => {
     },
   });
   return response.data;
+};
+
+// Authentication API functions
+export const login = async (credentials: AdminUserLogin): Promise<Token> => {
+  const response = await api.post('/auth/login', credentials);
+  return response.data;
+};
+
+export const registerAdminUser = async (userData: AdminUserCreate): Promise<AdminUser> => {
+  const response = await api.post('/auth/register', userData);
+  return response.data;
+};
+
+export const getCurrentUser = async (): Promise<AdminUser> => {
+  const response = await api.get('/auth/me');
+  return response.data;
+};
+
+// Admin-only API functions
+export const getAdminUsers = async (): Promise<AdminUser[]> => {
+  const response = await api.get('/admin/admin-users/');
+  return response.data;
+};
+
+export const createAdminUser = async (userData: AdminUserCreate): Promise<AdminUser> => {
+  const response = await api.post('/admin/admin-users/', userData);
+  return response.data;
+};
+
+export const updateAdminUser = async (userId: number, userData: AdminUserCreate): Promise<AdminUser> => {
+  const response = await api.put(`/admin/admin-users/${userId}`, userData);
+  return response.data;
+};
+
+export const deleteAdminUser = async (userId: number): Promise<void> => {
+  await api.delete(`/admin/admin-users/${userId}`);
 };
 
 // Export the api instance for direct use

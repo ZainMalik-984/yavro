@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { UserReward, User } from '../types';
 import {
   getUserRewards,
@@ -15,6 +15,25 @@ const UserRewards: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [userDetails, setUserDetails] = useState<User | null>(null);
 
+  const loadUserRewards = useCallback(async () => {
+    try {
+      const rewards = await getUserRewards(selectedUserId);
+      setUserRewards(rewards);
+    } catch (error) {
+      console.error('Error loading user rewards:', error);
+      alert('Failed to load user rewards');
+    }
+  }, [selectedUserId]);
+
+  const loadUserDetails = useCallback(async () => {
+    try {
+      const user = await getUser(selectedUserId);
+      setUserDetails(user);
+    } catch (error) {
+      console.error('Error loading user details:', error);
+    }
+  }, [selectedUserId]);
+
   useEffect(() => {
     loadUsers();
   }, []);
@@ -27,7 +46,7 @@ const UserRewards: React.FC = () => {
       setUserRewards([]);
       setUserDetails(null);
     }
-  }, [selectedUserId]);
+  }, [selectedUserId, loadUserRewards, loadUserDetails]);
 
   const loadUsers = async () => {
     try {
@@ -45,26 +64,7 @@ const UserRewards: React.FC = () => {
     }
   };
 
-  const loadUserRewards = async () => {
-    try {
-      const rewards = await getUserRewards(selectedUserId);
-      setUserRewards(rewards);
-    } catch (error) {
-      console.error('Error loading user rewards:', error);
-      alert('Failed to load user rewards');
-    }
-  };
-
-  const loadUserDetails = async () => {
-    try {
-      const user = await getUser(selectedUserId);
-      setUserDetails(user);
-    } catch (error) {
-      console.error('Error loading user details:', error);
-    }
-  };
-
-  const handleUseReward = async (userRewardId: number) => {
+  const handleUseReward = useCallback(async (userRewardId: number) => {
     if (window.confirm('Are you sure you want to mark this reward as used?')) {
       try {
         await markUserRewardAsUsed(userRewardId);
@@ -75,7 +75,7 @@ const UserRewards: React.FC = () => {
         alert('Failed to mark reward as used');
       }
     }
-  };
+  }, [loadUserRewards]);
 
   const getRewardTypeLabel = (type: string) => {
     switch (type) {
@@ -143,9 +143,7 @@ const UserRewards: React.FC = () => {
             <p>
               <strong>Name:</strong> {userDetails.name}
             </p>
-            <p>
-              <strong>Email:</strong> {userDetails.email}
-            </p>
+
             <p>
               <strong>Current Tier:</strong> {userDetails.current_tier}
             </p>

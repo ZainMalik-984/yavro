@@ -9,3 +9,6 @@ numpy
 psycopg2-binary
 python-multipart
 twilio
+python-jose[cryptography]
+passlib[bcrypt]
+setuptools
