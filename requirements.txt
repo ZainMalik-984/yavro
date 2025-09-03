@@ -12,3 +12,4 @@ twilio
 python-jose[cryptography]
 passlib[bcrypt]
 setuptools
+a2wsgi
