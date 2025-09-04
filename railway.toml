@@ -1,0 +1,9 @@
+[build]
+builder = "railpack"
+
+[build.commands]
+install = ["apt-get update && apt-get install -y libx11-dev libgl1-mesa-glx libglu1-mesa-dev libglib2.0-0"]
+build = "pip install -r requirements.txt"
+
+[start]
+command = "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
