@@ -12,6 +12,7 @@ from datetime import timedelta
 import face_recognition
 import numpy as np
 import logging
+from mangum import Mangum
 
 # Configure logging
 logging.basicConfig(
@@ -20,7 +21,7 @@ logging.basicConfig(
 )
 
 app = FastAPI()
-
+handler = Mangum(app)
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
