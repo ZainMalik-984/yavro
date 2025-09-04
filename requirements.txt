@@ -2,8 +2,7 @@ fastapi
 uvicorn
 sqlalchemy
 pydantic
-face_recognition
-git+https://github.com/ageitgey/face_recognition_models
+opencv-python-headless
 pillow
 numpy
 psycopg2-binary

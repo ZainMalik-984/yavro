@@ -2,7 +2,6 @@ from sqlalchemy.orm import Session
 from app import models
 from app import schemas
 import numpy as np
-import face_recognition
 from datetime import datetime
 import random
 
@@ -50,36 +49,44 @@ def delete_user(db: Session, user_id: int):
     return False
 
 
-def get_user_by_face_encoding(db: Session, encoding: np.ndarray, tolerance: float = 0.4):
+def get_user_by_face_encoding(db: Session, encoding: bytes, tolerance: float = 0.7):
+    """
+    Find user by face encoding using OpenCV-based comparison.
+    This function is kept for backward compatibility but the actual recognition
+    is now handled by the OpenCV face recognition service.
+    """
     import logging
-    users = db.query(models.User).all()
-    logging.info(f"Input encoding shape: {encoding.shape}")
+    users = db.query(models.User).filter(models.User.face_encoding.isnot(None)).all()
+    logging.info(f"Input encoding size: {len(encoding)} bytes")
 
     if not users:
-        logging.info("No users in database")
+        logging.info("No users with face encodings in database")
         return None
 
     for user in users:
         try:
             # Convert stored encoding back to numpy array
-            db_encoding = np.frombuffer(user.face_encoding, dtype=np.float64)
-            logging.info(
-                f"DB encoding shape for user {user.id}: {db_encoding.shape}")
+            db_encoding = np.frombuffer(user.face_encoding, dtype=np.uint8)
+            input_encoding = np.frombuffer(encoding, dtype=np.uint8)
+            
+            logging.info(f"DB encoding size for user {user.id}: {len(db_encoding)} bytes")
 
-            # Use face_recognition's compare_faces function for proper comparison
-            # This is more reliable than manual distance calculation
-            matches = face_recognition.compare_faces(
-                [db_encoding], encoding, tolerance=tolerance)
+            # Use correlation coefficient for similarity
+            correlation = np.corrcoef(db_encoding, input_encoding)[0, 1]
+            
+            # Handle NaN values
+            if np.isnan(correlation):
+                continue
+            
+            # Convert correlation to similarity score (0-1)
+            similarity = (correlation + 1) / 2
+            similarity = max(0.0, min(1.0, similarity))
+            
+            logging.info(f"Similarity for user {user.id} ({user.name}): {similarity}")
 
-            if matches[0]:
-                logging.info(f"Match found: user {user.id} ({user.name})")
+            if similarity > tolerance:
+                logging.info(f"Match found: user {user.id} ({user.name}) with similarity {similarity}")
                 return user
-            else:
-                # Also log the distance for debugging
-                distance = face_recognition.face_distance(
-                    [db_encoding], encoding)[0]
-                logging.info(
-                    f"No match for user {user.id} ({user.name}): distance={distance}")
 
         except Exception as e:
             logging.error(f"Error comparing with user {user.id}: {str(e)}")
@@ -89,11 +96,11 @@ def get_user_by_face_encoding(db: Session, encoding: np.ndarray, tolerance: floa
     return None
 
 
-def create_user(db: Session, user: schemas.UserCreate, face_encoding: np.ndarray):
+def create_user(db: Session, user: schemas.UserCreate, face_encoding: bytes):
     db_user = models.User(
         name=user.name,
         phone_number=user.phone_number,
-        face_encoding=face_encoding.tobytes(),
+        face_encoding=face_encoding,
         visit_count=0,
         current_tier=1
     )

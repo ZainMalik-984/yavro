@@ -8,8 +8,8 @@ from app import schemas
 from app import crud
 from app import database
 from app import auth
+from app.face_recognition_opencv import recognize_user_from_image, register_user_face
 from datetime import timedelta
-import face_recognition
 import numpy as np
 import logging
 
@@ -36,39 +36,47 @@ app.add_middleware(
 
 
 
-def get_face_encoding(file: UploadFile) -> np.ndarray:
+def get_face_encoding(file: UploadFile) -> bytes:
+    """
+    Extract face features using OpenCV and return as bytes for storage.
+    """
     import logging
     try:
         # Reset file pointer to beginning
         file.file.seek(0)
-
-        # Load image using face_recognition
-        image = face_recognition.load_image_file(file.file)
-
-        # Detect face locations first
-        face_locations = face_recognition.face_locations(image)
-        logging.info(f"Detected {len(face_locations)} face(s) in image")
-
-        if not face_locations:
+        
+        # Read file content
+        image_data = file.file.read()
+        
+        # Use OpenCV-based face recognition to extract features
+        from app.face_recognition_opencv import face_recognition_service
+        
+        # Process the image
+        input_image = face_recognition_service.process_image(image_data)
+        if input_image is None:
+            raise HTTPException(
+                status_code=400, detail="Could not process the image.")
+        
+        # Detect faces
+        faces = face_recognition_service.detect_faces(input_image)
+        logging.info(f"Detected {len(faces)} face(s) in image")
+        
+        if not faces:
             raise HTTPException(
                 status_code=400, detail="No face detected in the image.")
-
-        # Get face encodings
-        encodings = face_recognition.face_encodings(image, face_locations)
-
-        if not encodings:
-            raise HTTPException(
-                status_code=400, detail="Could not encode face features.")
-
-        # If multiple faces detected, use the first one
-        if len(encodings) > 1:
-            logging.warning(f"Multiple faces detected, using the first one")
-
-        encoding = encodings[0]
-        logging.info(f"Face encoding shape: {encoding.shape}")
-
-        return encoding
-
+        
+        # Use the largest face
+        main_face = max(faces, key=lambda f: f[2] * f[3])
+        
+        # Extract features
+        face_features = face_recognition_service.extract_face_features(input_image, main_face)
+        
+        # Convert to bytes for storage
+        encoding_bytes = face_features.tobytes()
+        logging.info(f"Face encoding size: {len(encoding_bytes)} bytes")
+        
+        return encoding_bytes
+        
     except Exception as e:
         logging.error(f"Error in face encoding: {str(e)}")
         if "No face detected" in str(e):
@@ -82,15 +90,20 @@ def get_face_encoding(file: UploadFile) -> np.ndarray:
 def recognize_user(file: UploadFile = File(...), db: Session = Depends(database.get_db)):
     try:
         logging.info("Starting face recognition process")
-        encoding = get_face_encoding(file)
-        logging.info(f"Got face encoding, shape: {encoding.shape}")
-
-        user = crud.get_user_by_face_encoding(db, encoding)
+        
+        # Reset file pointer to beginning
+        file.file.seek(0)
+        
+        # Read file content
+        image_data = file.file.read()
+        
+        # Use OpenCV-based face recognition
+        user = recognize_user_from_image(image_data, db)
+        
         if user:
             logging.info(f"User recognized: {user.name} (ID: {user.id})")
-            # Return only serializable fields using Pydantic schema
             return schemas.User.from_orm(user)
-
+        
         logging.info("No user found for the provided face")
         return JSONResponse(status_code=404, content={"detail": "User not found"})
     except Exception as e:
