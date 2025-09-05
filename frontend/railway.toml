@@ -2,4 +2,4 @@
 builder = "dockerfile"
 
 [start]
-command = "node server.js"
+command = "serve -s build -l 3000 --single"
