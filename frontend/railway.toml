@@ -1,0 +1,8 @@
+[build]
+builder = "nixpacks"
+
+[build.commands]
+build = "npm ci && npm run build"
+
+[start]
+command = "npx serve -s build -l 3000"
