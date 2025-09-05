@@ -2,7 +2,11 @@
 builder = "nixpacks"
 
 [build.commands]
-build = "npm ci && npm run build"
+install = "npm install --legacy-peer-deps"
+build = "npm run build"
 
 [start]
 command = "npx serve -s build -l 3000"
+
+[deploy]
+startCommand = "npx serve -s build -l 3000"
