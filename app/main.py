@@ -25,7 +25,7 @@ app = FastAPI()
 import os
 
 # Get allowed origins from environment variable or use defaults
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000,https://backend.yavro.co").split(",")
 
 app.add_middleware(
     CORSMiddleware,
