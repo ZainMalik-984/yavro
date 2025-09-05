@@ -1,4 +1,3 @@
-from sqlalchemy.orm import Session
 from app.database import SessionLocal, engine
 from app import models
 from app import schemas

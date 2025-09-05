@@ -18,16 +18,16 @@ except ImportError:
 def init_tier_system():
     """Initialize the tier system with default tiers and rewards"""
     db = next(database.get_db())
-    
+
     try:
         # Check if tiers already exist
         existing_tiers = crud.get_tiers(db)
         if existing_tiers:
             print("Tier system already initialized. Skipping...")
             return
-        
+
         print("Initializing tier-based reward system...")
-        
+
         # Create default tiers
         tiers_data = [
             {
@@ -36,7 +36,7 @@ def init_tier_system():
                 "description": "First tier - 5 visits"
             },
             {
-                "name": "Silver", 
+                "name": "Silver",
                 "visit_requirement": 10,
                 "description": "Second tier - 10 visits"
             },
@@ -46,14 +46,15 @@ def init_tier_system():
                 "description": "Third tier - 15 visits"
             }
         ]
-        
+
         created_tiers = []
         for tier_data in tiers_data:
             tier = schemas.TierCreate(**tier_data)
             db_tier = crud.create_tier(db, tier)
             created_tiers.append(db_tier)
-            print(f"Created tier: {db_tier.name} (requires {db_tier.visit_requirement} visits)")
-        
+            print(
+                f"Created tier: {db_tier.name} (requires {db_tier.visit_requirement} visits)")
+
         # Create default rewards for each tier
         rewards_data = [
             {
@@ -76,20 +77,20 @@ def init_tier_system():
                 "description": "Spin the wheel to get a random reward on your 15th visit"
             }
         ]
-        
+
         created_rewards = []
         for reward_data in rewards_data:
             tier_name = reward_data.pop("tier_name")
             tier = next(t for t in created_tiers if t.name == tier_name)
-            
+
             reward = schemas.RewardCreate(tier_id=tier.id, **reward_data)
             db_reward = crud.create_reward(db, reward)
             created_rewards.append(db_reward)
             print(f"Created reward: {db_reward.name} for {tier_name} tier")
-        
+
         # Create spinner options for the Gold tier spinner
-        gold_reward = next(r for r in created_rewards 
-                          if r.reward_type == "spinner")
+        gold_reward = next(r for r in created_rewards
+                           if r.reward_type == "spinner")
         spinner_options_data = [
             {
                 "name": "Free Coffee",
@@ -118,16 +119,16 @@ def init_tier_system():
                 "probability": 0.1
             }
         ]
-        
+
         for option_data in spinner_options_data:
             option = schemas.SpinnerOptionCreate(**option_data)
-            db_option = crud.create_spinner_option(db, option, 
-                                                  gold_reward.id)
+            db_option = crud.create_spinner_option(db, option,
+                                                   gold_reward.id)
             print(f"Created spinner option: {db_option.name} "
                   f"(probability: {db_option.probability})")
-        
+
         print("Tier-based reward system initialized successfully!")
-        
+
     except Exception as e:
         print(f"Error initializing tier system: {str(e)}")
         db.rollback()

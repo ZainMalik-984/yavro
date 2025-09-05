@@ -34,8 +34,6 @@ app.add_middleware(
 )
 
 
-
-
 def get_face_encoding(file: UploadFile) -> np.ndarray:
     import logging
     try:
@@ -322,11 +320,12 @@ def register_user_without_image(
     """Register a new user without face image"""
     try:
         # Check if phone number already exists
-        db_user = crud.get_user_by_phone(db, phone_number=user_data.phone_number)
+        db_user = crud.get_user_by_phone(
+            db, phone_number=user_data.phone_number)
         if db_user:
             raise HTTPException(
                 status_code=400, detail="Phone number already registered")
-        
+
         # Create user without face encoding
         user = crud.create_user_without_face(db=db, user=user_data)
         return schemas.User.from_orm(user)
@@ -566,16 +565,16 @@ async def upload_cafe_logo(
     """Upload cafe logo as base64"""
     if not file.content_type.startswith('image/'):
         raise HTTPException(status_code=400, detail="File must be an image")
-    
+
     # Read file content and convert to base64
     import base64
     content = await file.read()
     logo_base64 = base64.b64encode(content).decode('utf-8')
-    
+
     # Add data URL prefix for frontend display
     mime_type = file.content_type
     data_url = f"data:{mime_type};base64,{logo_base64}"
-    
+
     # Update database with logo base64
     db_settings = crud.update_cafe_logo(db, data_url)
     return schemas.AppSettings.from_orm(db_settings)
@@ -606,12 +605,12 @@ def login(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
+
     access_token_expires = timedelta(minutes=auth.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = auth.create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    
+
     return schemas.Token(
         access_token=access_token,
         token_type="bearer",
@@ -640,15 +639,15 @@ def register_super_admin(
 ):
     """Register a new super admin user - only allowed with specific email"""
     import os
-    
+
     # Check if the email matches the configured super admin email
     super_admin_email = os.getenv("SUPER_ADMIN_EMAIL")
     if not super_admin_email or super_admin.email != super_admin_email:
         raise HTTPException(
-            status_code=403, 
+            status_code=403,
             detail="Super admin registration not allowed for this email"
         )
-    
+
     # Create admin user with super-admin role
     admin_user_data = schemas.AdminUserCreate(
         username=super_admin.username,
@@ -656,7 +655,7 @@ def register_super_admin(
         password=super_admin.password,
         role="super-admin"
     )
-    
+
     db_user = crud.create_admin_user(db, admin_user_data)
     if not db_user:
         raise HTTPException(
