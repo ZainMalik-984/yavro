@@ -1,12 +1,5 @@
 [build]
-builder = "nixpacks"
-
-[build.commands]
-install = "npm install --legacy-peer-deps"
-build = "npm run build"
+builder = "dockerfile"
 
 [start]
-command = "npx serve -s build -l 3000"
-
-[deploy]
-startCommand = "npx serve -s build -l 3000"
+command = "serve -s build -l 3000"
